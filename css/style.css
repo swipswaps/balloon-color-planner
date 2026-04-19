@@ -1,0 +1,224 @@
+/* css/style.css */
+:root {
+  --bg:     #f8f7f5;
+  --card:   #ffffff;
+  --border: #e2ddd8;
+  --text:   #1a1816;
+  --muted:  #7a756f;
+  --accent: #e8006a;
+  --radius: 12px;
+  --font:   'Segoe UI', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: linear-gradient(135deg, #ff69b4, var(--accent));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 15px; flex-shrink: 0;
+}
+header h1  { font-size: 15px; font-weight: 600; }
+header p   { font-size: 10px; color: var(--muted); }
+
+.layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0;
+  height: calc(100vh - 55px);
+}
+
+/* ── Left: canvas panel ─────────────────────────────────────────── */
+.canvas-panel {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+  border-right: 1px solid var(--border);
+}
+
+#mainCanvas {
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  cursor: crosshair;
+  max-width: 100%;
+  display: block;
+}
+
+#status {
+  font-size: 10px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.canvas-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.canvas-actions button { font-size: 10px; }
+
+/* ── Right: sidebar ─────────────────────────────────────────────── */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sb-section {
+  border-bottom: 1px solid var(--border);
+  padding: 10px 14px;
+  flex-shrink: 0;
+}
+
+.sb-title {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+/* Color slots (Rule 7: visual role indicators) */
+.slots {
+  display: flex;
+  gap: 5px;
+}
+.slot {
+  flex: 1;
+  height: 44px;
+  border-radius: 8px;
+  border: 1.5px dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: var(--muted);
+  cursor: pointer;
+  position: relative;
+  transition: border-color .12s;
+  overflow: hidden;
+  padding: 2px 18px 2px 4px;
+  text-align: center;
+  line-height: 1.3;
+}
+.slot:hover   { border-color: var(--accent); }
+.slot.active  { outline: 2px solid var(--accent); outline-offset: 1px; }
+.slot.filled  { border-style: solid; border-width: 1.5px; }
+.slot-x {
+  position: absolute; top: 2px; right: 5px;
+  font-size: 14px; opacity: .5; cursor: pointer; line-height: 1;
+}
+.slot-x:hover { opacity: 1; }
+
+/* Role assignment buttons */
+.role-btns {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+}
+.role-btn {
+  flex: 1; font-size: 9px; padding: 3px 4px;
+  border-radius: 5px; border: 1px solid var(--border);
+  background: var(--card); color: var(--muted); cursor: pointer;
+  text-align: center; transition: all .12s;
+}
+.role-btn:hover { background: var(--bg); color: var(--text); }
+
+/* Selected chips */
+.chips-wrap { display: flex; flex-wrap: wrap; gap: 4px; min-height: 24px; }
+.chip {
+  display: flex; align-items: center; gap: 3px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 20px; padding: 2px 8px 2px 5px;
+  font-size: 10px; cursor: pointer;
+}
+.chip:hover { border-color: #aaa; }
+.chip-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; border: 1px solid rgba(0,0,0,.1); }
+.none { font-size: 10px; color: var(--muted); }
+
+/* Palette */
+.palette-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 14px;
+}
+.palette-scroll::-webkit-scrollbar { width: 3px; }
+.palette-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.pal-group { margin-bottom: 10px; }
+
+.preset-btn {
+  display: block; width: 100%; text-align: left;
+  background: none; border: none; padding: 0 0 4px;
+  font-size: 9px; font-weight: 700; color: var(--accent);
+  text-transform: uppercase; letter-spacing: .06em;
+  cursor: pointer; font-family: inherit;
+}
+.preset-btn:hover { text-decoration: underline; color: #b8004e; }
+
+.group-label {
+  font-size: 9px; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .06em;
+  margin-bottom: 4px;
+}
+
+.swatches { display: flex; flex-wrap: wrap; gap: 3px; }
+.swatch {
+  width: 20px; height: 20px; border-radius: 50%;
+  cursor: pointer; border: 2px solid transparent;
+  transition: transform .1s, border-color .1s; flex-shrink: 0;
+}
+.swatch:hover { transform: scale(1.28); }
+
+/* Summary */
+.sum-section {
+  padding: 8px 14px 10px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+  max-height: 160px;
+  overflow-y: auto;
+}
+.sum-row {
+  display: flex; justify-content: space-between;
+  font-size: 10px; padding: 2px 0;
+  border-bottom: 1px solid #f0ece8;
+}
+
+/* Actions */
+.actions {
+  padding: 8px 14px;
+  border-top: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 5px;
+  flex-shrink: 0;
+}
+button.action {
+  font-size: 12px; padding: 7px 10px;
+  border-radius: 7px; border: 1px solid var(--border);
+  background: var(--card); color: var(--text);
+  cursor: pointer; text-align: left; width: 100%;
+  font-family: var(--font);
+}
+button.action:hover { background: var(--bg); }
+button.action.primary {
+  background: var(--text); color: #fff; border-color: var(--text);
+}
