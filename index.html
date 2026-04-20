@@ -271,8 +271,7 @@ button.action.primary {
     </div>
   </div>
 </div>
-<script>
-// js/config.js
+<script>// js/config.js
 // White-label configuration — this is the ONLY file you edit to rebrand.
 // Change these values, push, and the site updates automatically.
 
@@ -299,10 +298,8 @@ const CONFIG = {
 
 // Apply accent color to CSS variable at runtime
 document.documentElement.style.setProperty('--accent', CONFIG.accent);
-
 </script>
-<script>
-// js/regions.js
+<script>// js/regions.js
 // AUTO-GENERATED from hybrid segmentation of clust_row_mocha.png
 // Rule 1: visually verified — annotated + reconstruction images confirmed alignment
 // Rule 8: positions NOT modified after detection — geometry integrity preserved
@@ -506,10 +503,8 @@ const REGIONS = RAW_REGIONS.map(r => ({
     ctx.arc(r.cx, r.cy, r.r * 0.95, 0, Math.PI * 2);
   }
 }));
-
 </script>
-<script>
-// js/palette.js
+<script>// js/palette.js
 // Colors visible in actual calltheballoonlady.com product photos only.
 // Trimmed from 86 to 27 on first instruction (Rule: execute at first request).
 
@@ -589,10 +584,8 @@ const PRESETS = {
     small:  { n: 'Reflex Silver',       h: '#A8A8B8' },
   },
 };
-
 </script>
-<script>
-// js/recolor.js
+<script>// js/recolor.js
 // Rule 2: original photo is the base layer — never reconstructed from geometry
 // Rule 3: recoloring engine — clip to region, preserve photo shading
 // Rule 4: regions define their own path() — not circles
@@ -654,13 +647,13 @@ const Recolor = (() => {
 
       // 'color' blend: shifts hue, preserves luminance — dark gaps stay dark (Rule 13)
       oc_ctx.globalCompositeOperation = 'color';
-      oc_ctx.globalAlpha = 0.88;
+      oc_ctx.globalAlpha = 0.97;
       oc_ctx.fillStyle = color;
       oc_ctx.fillRect(0, 0, W, H);
 
       // Restore shading depth (Rule 13)
       oc_ctx.globalCompositeOperation = 'multiply';
-      oc_ctx.globalAlpha = 0.30;
+      oc_ctx.globalAlpha = 0.20;
       oc_ctx.drawImage(_photoImg, 0, 0, W, H);
 
       // Restore highlights (Rule 13)
@@ -698,10 +691,8 @@ const Recolor = (() => {
 
   return { loadPhoto, recolor, drawSelection };
 })();
-
 </script>
-<script>
-// js/interaction.js
+<script>// js/interaction.js
 // Rule 6: interaction layer is SEPARATE from rendering
 // This file handles: clicking, selection, grouping, multi-select
 // It does NOT draw anything visual — that is Recolor's job
@@ -760,10 +751,8 @@ const Interaction = (() => {
 
   return { init, selectByRole, destroy };
 })();
-
 </script>
-<script>
-// js/app.js
+<script>// js/app.js
 // Rule 12: full pipeline — Image → Segmentation → Regions → Interaction → Color → Recolor → Verify
 // Rule 7: color assignment by role (large/medium/small), not blind alternation
 // Rule 11: revert protocol — restore immediately, present, then explain
@@ -801,6 +790,7 @@ const App = (() => {
     // Rule 10: verify photo loads
     try {
       await Recolor.loadPhoto(PHOTO_B64);
+      document.getElementById('status').textContent = '';
     } catch(e) {
       console.error('Photo load failed:', e);
       document.getElementById('status').textContent = 'Error: photo failed to load';
@@ -996,7 +986,6 @@ const App = (() => {
 })();
 
 window.addEventListener('DOMContentLoaded', App.init);
-
 </script>
 </body>
 </html>
