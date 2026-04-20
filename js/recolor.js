@@ -1,12 +1,14 @@
-// js/recolor.js — FIXED: correct data URI prefix + error handling
-const PHOTO_B64 = "iVBORw0KGgoAAAANSUhEUgAAAoAAAAKACAYAAACX4d4x..."; // ← PASTE YOUR FULL ORIGINAL BASE64 HERE (from the original Claude zip)
+// js/recolor.js — COMPLETE FILE with correct data URI prefix
+const PHOTO_B64 = "iVBORw0KGgoAAAANSUhEUgAAAoAAAAKACAYAAACX4d4x..."; 
+// ← REPLACE THE LINE ABOVE WITH YOUR FULL ORIGINAL BASE64 FROM THE CLAUDE ZIP
+// (the long string that starts with iVBORw0KGgoAAAANSUhEUgAAAoAAAAKACAYAAACX4d4x
+// and ends with the last characters from the original photo file)
 
 const Recolor = (() => {
   let _photoImg = null;
 
   function loadPhoto(callback) {
     const img = new Image();
-    // FIXED: added the missing data URI prefix
     img.src = 'data:image/png;base64,' + PHOTO_B64;
     img.onload = () => {
       console.log("✅ Photo loaded successfully");
@@ -22,7 +24,6 @@ const Recolor = (() => {
 
   function recolor(ctx, regions, colorMap) {
     if (!_photoImg) throw new Error('Photo not loaded — call loadPhoto() first');
-
     const W = ctx.canvas.width;
     const H = ctx.canvas.height;
 
@@ -33,7 +34,6 @@ const Recolor = (() => {
     regions.forEach(region => {
       const color = colorMap[region.id];
       if (!color) return;
-
       ctx.save();
       ctx.beginPath();
       region.path(ctx);
