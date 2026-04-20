@@ -1,38 +1,76 @@
-// js/recolor.js — upgraded with correct data URI prefix
-const PHOTO_B64 = "iVBORw0KGgoAAAANSUhEUgAAAoAAAAKACAYAAACX4d4x..."; // your full mocha cluster base64 from the original repo (unchanged)
+// js/recolor.js — FIXED: correct data URI prefix + error handling
+const PHOTO_B64 = "iVBORw0KGgoAAAANSUhEUgAAAoAAAAKACAYAAACX4d4x..."; // ← PASTE YOUR FULL ORIGINAL BASE64 HERE (from the original Claude zip)
 
 const Recolor = (() => {
-  let photoImg = null;
+  let _photoImg = null;
 
   function loadPhoto(callback) {
-    photoImg = new Image();
+    const img = new Image();
     // FIXED: added the missing data URI prefix
-    photoImg.src = 'data:image/png;base64,' + PHOTO_B64;
-    photoImg.onload = () => {
+    img.src = 'data:image/png;base64,' + PHOTO_B64;
+    img.onload = () => {
       console.log("✅ Photo loaded successfully");
-      callback();
+      _photoImg = img;
+      if (callback) callback();
     };
-    photoImg.onerror = () => {
+    img.onerror = () => {
       console.error("❌ Photo failed to load");
-      document.getElementById("photo-error") && (document.getElementById("photo-error").textContent = "Photo loaded");
+      const errEl = document.getElementById("photo-error");
+      if (errEl) errEl.textContent = "Error: photo failed to load";
     };
   }
 
-  function recolor(regionColors) {
-    if (!photoImg) return;
-    const offscreen = document.createElement("canvas");
-    offscreen.width = photoImg.width;
-    offscreen.height = photoImg.height;
-    const ctx = offscreen.getContext("2d");
-    ctx.drawImage(photoImg, 0, 0);
+  function recolor(ctx, regions, colorMap) {
+    if (!_photoImg) throw new Error('Photo not loaded — call loadPhoto() first');
 
-    // rest of the original recolor logic (regions clipping, multiply/screen blend, etc.) remains 100% unchanged
-    // ... (full original code from your repo stays exactly the same)
+    const W = ctx.canvas.width;
+    const H = ctx.canvas.height;
 
-    return offscreen.toDataURL("image/png");
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = 1;
+    ctx.drawImage(_photoImg, 0, 0, W, H);
+
+    regions.forEach(region => {
+      const color = colorMap[region.id];
+      if (!color) return;
+
+      ctx.save();
+      ctx.beginPath();
+      region.path(ctx);
+      ctx.clip();
+
+      ctx.globalCompositeOperation = 'color';
+      ctx.globalAlpha = 0.92;
+      ctx.fillStyle = color;
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.globalCompositeOperation = 'multiply';
+      ctx.globalAlpha = 0.35;
+      ctx.drawImage(_photoImg, 0, 0, W, H);
+
+      ctx.globalCompositeOperation = 'screen';
+      ctx.globalAlpha = 0.12;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.restore();
+    });
   }
 
-  return { loadPhoto, recolor };
+  function drawSelection(ctx, region) {
+    ctx.save();
+    ctx.beginPath();
+    region.path(ctx);
+    ctx.strokeStyle = '#e8006a';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.globalAlpha = 0.12;
+    ctx.fillStyle = '#e8006a';
+    ctx.fill();
+    ctx.restore();
+  }
+
+  return { loadPhoto, recolor, drawSelection };
 })();
 
 export default Recolor;

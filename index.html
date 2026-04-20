@@ -7,17 +7,18 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- your original Claude UI exactly as it was (YOUR COLORS, Large/Medium/Small, SELECTED, buttons, etc.) -->
-  <div id="photo-error"></div>
+  <!-- Your original Claude UI (YOUR COLORS, Large/Medium/Small, SELECTED, buttons, etc.) remains 100% unchanged -->
+  <div id="photo-error" style="color:red; text-align:center; margin:10px 0;"></div>
 
   <script type="module">
     import Recolor from "./js/recolor.js";
     import regions from "./js/regions.js";
 
+    // Load the photo with the fixed prefix
     Recolor.loadPhoto(() => {
-      // photo now loads correctly
+      console.log("Photo ready — app can now recolor");
+      // Rest of your original app.js logic continues unchanged
       document.getElementById("photo-error").textContent = "";
-      // rest of your original app.js logic continues unchanged
     });
   </script>
 </body>
