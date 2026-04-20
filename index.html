@@ -59,14 +59,18 @@ header p   { font-size: 10px; color: var(--muted); }
   gap: 12px;
   background: var(--card);
   border-right: 1px solid var(--border);
+  min-width: 332px;
+  flex-shrink: 0;
 }
 
 #mainCanvas {
   border-radius: 8px;
   border: 1px solid var(--border);
   cursor: crosshair;
-  max-width: 100%;
+  width: 300px;
+  height: 356px;
   display: block;
+  flex-shrink: 0;
 }
 
 #status {
