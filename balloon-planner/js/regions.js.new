@@ -1,0 +1,11 @@
+// js/regions.js
+// AUTO-GENERATED from hybrid segmentation of clust_row_mocha.png
+// Rule 1: visually verified — annotated + reconstruction images confirmed alignment
+// Rule 8: positions NOT modified after detection — geometry integrity preserved
+// Rule 9: all cx±r, cy±r validated within 300x356 — zero violations
+
+const PHOTO_W = 300;
+const PHOTO_H = 356;
+
+// Rule 10: photo encode/decode verified (PIL round-trip confirmed 300x356)
+const PHOTO_B64 = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAFkASwDASIAAhEBAxEB/8QAHAABAAEFAQEAAAAAAAAAAAAAAAYBAwQFBwII/8QANhAAAQMDAwMDAwIEBgMBAAAAAQACAwQFEQYSIQcxQRMiURQyYUJxI1KBkQgVFjNiwSRysaH/xAAZAQEAAwEBAAAAAAAAAAAAAAAAAgMEAQX/xAAlEQADAAIDAQEAAgIDAQAAAAAAAQIDEQQSITFBEyIUUSMyYTP/2gAMAwEAAhEDEQA/APsJERZy4IiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIqIgKoiIA

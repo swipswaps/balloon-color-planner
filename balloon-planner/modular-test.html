@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modular Balloon Color Planner - Test</title>
+<style>
+body { font-family: system-ui, sans-serif; margin: 20px; }
+#mainCanvas { border: 1px solid #ccc; display: block; margin: 20px 0; }
+#status { padding: 10px; margin: 10px 0; border-radius: 4px; }
+.error { background: #ffcccc; color: #cc0000; }
+.success { background: #ccffcc; color: #008000; }
+button { padding: 8px 16px; margin: 5px; cursor: pointer; }
+</style>
+</head>
+<body>
+<h1>Modular Balloon Color Planner</h1>
+<div id="status">Loading...</div>
+<button onclick="App.selectRole('large')">Select Large Balloons</button>
+<button onclick="App.selectRole('medium')">Select Medium Balloons</button>
+<button onclick="App.selectRole('small')">Select Small Balloons</button>
+<button onclick="App.clearSel()">Clear Selection</button>
+
+<div style="display: grid; grid-template-columns: 1fr 300px; gap: 20px;">
+  <div>
+    <canvas id="mainCanvas" style="border: 1px solid #ccc; max-width: 100%;"></canvas>
+  </div>
+  <div style="border-left: 1px solid #ddd; padding-left: 20px;">
+    <h3>Color Slots</h3>
+    <div id="slots"></div>
+    <h3>Selected Balloons</h3>
+    <div id="chips"></div>
+    <h3>Summary</h3>
+    <div id="summary"></div>
+  </div>
+</div>
+
+<h3>Color Palette</h3>
+<div id="palette"></div>
+
+<script src="js/palette.js"></script>
+<script src="js/config.js"></script>
+<script src="js/regions.js"></script>
+<script src="js/recolor.js"></script>
+<script src="js/interaction.js"></script>
+<script src="js/app.js"></script>
+<script>
+// On load, initialize the app and catch any errors
+window.addEventListener('DOMContentLoaded', async () => {
+  const statusEl = document.getElementById('status');
+  try {
+    console.log('🔵 PHOTO_B64 starts with:', PHOTO_B64.substring(0, 50));
+    console.log('🔵 PHOTO_B64 length:', PHOTO_B64.length);
+    console.log('🔵 REGIONS count:', REGIONS.length);
+    statusEl.className = 'success';
+    statusEl.textContent = '✅ Modular files loaded. Initializing app...';
+    await App.init();
+    console.log('✅ App.init() completed successfully');
+    const canvas = document.getElementById('mainCanvas');
+    console.log('✅ Canvas size:', canvas.width, 'x', canvas.height);
+    statusEl.textContent = '✅ APP RUNNING - Photo loaded successfully!';
+  } catch(e) {
+    statusEl.className = 'error';
+    statusEl.textContent = '❌ Error: ' + e.message;
+    console.error('Full error:', e);
+    console.error('Stack:', e.stack);
+  }
+});
+</script>
+</body>
+</html>

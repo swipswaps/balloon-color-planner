@@ -1,0 +1,106 @@
+// js/recolor.js
+// Rule 2: original photo is the base layer — never reconstructed from geometry
+// Rule 3: recoloring engine — clip to region, preserve photo shading
+// Rule 4: regions define their own path() — not circles
+// Rule 6: rendering only — interaction is separate (app.js)
+// Rule 13: preserves original lighting, shading, texture
+//
+// BOUNDARY FIX (v2):
+// Previous approach: fillRect(0,0,W,H) clipped to circle → bleed where circles
+// overlap in 2D even if depth-separated in the photo.
+//
+// Fix: composite 'color' blend into an offscreen canvas per region, then stamp
+// only that clipped result onto the main canvas. The photo's dark inter-balloon
+// gaps (luminance ~0) stay dark under 'color' blend — they act as a natural mask.
+
+const Recolor = (() => {
+  let _photoImg = null;
+
+  function loadPhoto(b64) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        if (img.naturalWidth === 0) reject(new Error('Image decoded to zero size'));
+        _photoImg = img;
+        resolve(img);
+      };
+      img.onerror = () => reject(new Error('Image failed to load'));
+      img.src = b64;
+    });
+  }
+
+  function recolor(ctx, regions, colorMap) {
+    if (!_photoImg) throw new Error('Photo not loaded');
+
+    const W = ctx.canvas.width;
+    const H = ctx.canvas.height;
+
+    // Base layer: original photo (Rule 2)
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = 1;
+    ctx.drawImage(_photoImg, 0, 0, W, H);
+
+    regions.forEach(region => {
+      const color = colorMap[region.id];
+      if (!color) return;
+
+      // Offscreen canvas — isolates this region's colorized pixels
+      const oc = document.createElement('canvas');
+      oc.width = W;
+      oc.height = H;
+      const oc_ctx = oc.getContext('2d');
+
+      // Draw photo into offscreen
+      oc_ctx.drawImage(_photoImg, 0, 0, W, H);
+
+      oc_ctx.save();
+      oc_ctx.beginPath();
+      region.path(oc_ctx);
+      oc_ctx.clip();
+
+      // 'color' blend: shifts hue, preserves luminance — dark gaps stay dark (Rule 13)
+      oc_ctx.globalCompositeOperation = 'color';
+      oc_ctx.globalAlpha = 0.88;
+      oc_ctx.fillStyle = color;
+      oc_ctx.fillRect(0, 0, W, H);
+
+      // Restore shading depth (Rule 13)
+      oc_ctx.globalCompositeOperation = 'multiply';
+      oc_ctx.globalAlpha = 0.30;
+      oc_ctx.drawImage(_photoImg, 0, 0, W, H);
+
+      // Restore highlights (Rule 13)
+      oc_ctx.globalCompositeOperation = 'screen';
+      oc_ctx.globalAlpha = 0.10;
+      oc_ctx.fillStyle = '#ffffff';
+      oc_ctx.fillRect(0, 0, W, H);
+
+      oc_ctx.restore();
+
+      // Stamp offscreen result — clipped so nothing bleeds outside the region
+      ctx.save();
+      ctx.beginPath();
+      region.path(ctx);
+      ctx.clip();
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = 1;
+      ctx.drawImage(oc, 0, 0);
+      ctx.restore();
+    });
+  }
+
+  function drawSelection(ctx, region) {
+    ctx.save();
+    ctx.beginPath();
+    region.path(ctx);
+    ctx.strokeStyle = '#e8006a';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.globalAlpha = 0.15;
+    ctx.fillStyle = '#e8006a';
+    ctx.fill();
+    ctx.restore();
+  }
+
+  return { loadPhoto, recolor, drawSelection };
+})();

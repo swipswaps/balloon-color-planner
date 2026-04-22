@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Balloon Color Planner — The Balloon Lady</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:#fafafa;padding:20px}
+#bp{max-width:1100px;margin:0 auto;background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+
+h1{font-size:24px;font-weight:600;color:#333;margin-bottom:8px}
+.subtitle{font-size:13px;color:#888;margin-bottom:24px}
+
+.top-area{display:grid;grid-template-columns:360px 1fr;gap:32px;margin-bottom:40px}
+#canvas-wrap{background:linear-gradient(135deg, #faf8f5 0%, #f5f2ed 100%);border-radius:12px;border:1px solid #e8e4df;padding:20px;height:380px;display:flex;align-items:center;justify-content:center;position:relative}
+#bsvg{width:100%;height:100%;display:block}
+
+#your-selection{background:#fff;border:1px solid #e8e4df;border-radius:12px;padding:24px}
+.selection-title{font-size:11px;font-weight:600;color:#666;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px}
+.sel-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.sel-label{font-size:12px;font-weight:600;color:#666;min-width:110px;text-transform:uppercase;letter-spacing:.06em}
+.sel-box{flex:1;min-height:68px;border-radius:10px;border:2px solid #e8e4df;display:flex;align-items:center;padding:8px 12px;gap:12px;background:#fafafa;transition:all .2s;position:relative}
+.sel-box.filled{border:2px solid #333}
+.sel-mini{width:52px;height:52px;flex-shrink:0;border-radius:8px;overflow:hidden}
+.sel-info{flex:1}
+.sel-name{font-size:14px;font-weight:600;color:#333}
+.sel-clear{position:absolute;top:8px;right:12px;width:24px;height:24px;border-radius:50%;background:#f5f5f5;border:none;color:#999;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.sel-clear:hover{background:#e8e8e8;color:#333}
+
+.arr-strip{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.arr-thumb{width:88px;height:88px;border-radius:10px;border:2px solid #e0e0e0;cursor:pointer;padding:6px;background:#faf8f5;transition:all .15s;position:relative}
+.arr-thumb:hover{border-color:#999}
+.arr-thumb.on{border-color:#2a6030;border-width:4px;padding:4px;box-shadow:0 0 0 4px rgba(42,96,48,.1)}
+.arr-thumb svg{width:100%;height:100%;display:block}
+.arr-name{position:absolute;bottom:-22px;left:0;right:0;text-align:center;font-size:11px;color:#666;font-weight:500}
+.arr-thumb.on .arr-name{color:#2a6030}
+
+.section-label{font-size:11px;font-weight:600;color:#666;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+
+#color-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:13px}
+#color-nav button{background:#fff;border:2px solid #e8e4df;border-radius:8px;padding:8px 16px;cursor:pointer;font-weight:600;transition:all .2s}
+#color-nav button:hover{border-color:#2a6030;color:#2a6030}
+#color-nav span{color:#666;font-weight:500}
+
+#color-search-wrapper{margin-bottom:16px}
+#color-search{width:100%;padding:14px 20px;font-size:15px;border:2px solid #e8e4df;border-radius:10px;outline:none;transition:all .2s}
+#color-search:focus{border-color:#2a6030;box-shadow:0 0 0 3px rgba(42,96,48,.1)}
+
+.color-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.color-card{cursor:pointer;border-radius:10px;border:2px solid transparent;padding:8px;background:#fafafa;transition:all .15s;position:relative}
+.color-card:hover{border-color:#ddd;background:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.color-card.active-main{border-color:#2a6030;border-width:3px;padding:7px}
+.color-card.active-accent{border-color:#c0006a;border-width:3px;padding:7px}
+.color-mini-cluster{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;margin-bottom:6px}
+.color-name{font-size:10px;text-align:center;color:#666;font-weight:500;line-height:1.3}
+.badge{position:absolute;top:6px;right:6px;background:#2a6030;color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:999px}
+.badge.accent{background:#c0006a}
+
+.plan-box{background:#f8f8f8;border-radius:10px;padding:20px;margin-top:40px}
+.plan-title{font-size:11px;font-weight:600;color:#666;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.plan-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:13px}
+.plan-dot{width:14px;height:14px;border-radius:50%;border:1px solid rgba(0,0,0,.1);flex-shrink:0}
+.plan-name{flex:1;color:#333;font-weight:500}
+.plan-cnt{color:#666;font-variant-numeric:tabular-nums}
+.plan-empty{font-size:12px;color:#999;font-style:italic}
+#copy-btn{margin-top:16px;width:100%;padding:14px;font-size:15px;border:none;border-radius:8px;cursor:pointer;background:#2a6030;color:#fff;font-weight:600}
+#copy-btn:hover{background:#1f4823}
+
+@media (max-width: 768px) {
+  .top-area{grid-template-columns:1fr}
+  .color-grid{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div id="bp">
+  <h1>Balloon Color Planner</h1>
+  <p class="subtitle">Design your custom arrangement — most use 1-2 colors</p>
+
+  <div class="top-area">
+    <div id="canvas-wrap">
+      <svg id="bsvg" viewBox="0 0 180 160" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+
+    <div id="your-selection">
+      <div class="selection-title">YOUR SELECTION</div>
+      
+      <div class="sel-row">
+        <div class="sel-label">MAIN COLOR</div>
+        <div class="sel-box" id="main-box">
+          <span class="sel-hint">Click a color below</span>
+        </div>
+      </div>
+
+      <div class="sel-row">
+        <div class="sel-label">ACCENT</div>
+        <div class="sel-box" id="accent-box">
+          <span class="sel-hint">Optional — click any color again</span>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top:24px;margin-bottom:8px">ARRANGEMENT SHAPE</div>
+      <div class="arr-strip" id="arr-strip"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">CHOOSE COLORS</div>
+    
+    <div id="color-nav">
+      <button onclick="prevRow()">← Previous Row</button>
+      <span id="row-indicator">Row 1 of 14</span>
+      <button onclick="nextRow()">Next Row →</button>
+    </div>
+
+    <div id="color-search-wrapper">
+      <input id="color-search" type="text" placeholder="🔎 Search colors (e.g. pink, metallic, teal, rose...)">
+    </div>
+    
+    <div class="color-grid" id="color-grid"></div>
+  </div>
+
+  <div class="plan-box">
+    <div class="plan-title">ORDER SUMMARY</div>
+    <div id="plan-rows"></div>
+    <button id="copy-btn" onclick="copyPlan()">Copy to clipboard</button>
+  </div>
+</div>
+
+<script>
+// ====================== FULL COLOR CHART ======================
+const COLORS = [
+  {name:"Crystal Clear",hex:"#F8F8F8"},{name:"Fashion White",hex:"#FAFAFA"},{name:"Pearl White",hex:"#F5F0E8"},{name:"Pastel Dusk Cream",hex:"#F0E6D9"},{name:"Silk Oyster White",hex:"#F0E8E0"},{name:"Deluxe White Sand",hex:"#EDE6D8"},
+  {name:"Pastel Matte Yellow",hex:"#F8E58C"},{name:"Neon Yellow",hex:"#E5D103"},{name:"Fashion Yellow",hex:"#E5D103"},{name:"Deluxe Honey Yellow",hex:"#F2C94C"},{name:"Deluxe Mustard",hex:"#D9B03C"},{name:"Deluxe Latte",hex:"#C8B8A0"},
+  {name:"Metallic Gold",hex:"#D4AF37"},{name:"Reflex Gold",hex:"#C9A227"},{name:"Silk Gold Dust",hex:"#C9B68A"},{name:"Reflex Champagne",hex:"#F2D98B"},{name:"Pastel Matte Melon",hex:"#FFB8A0"},{name:"Metallic Rose Gold",hex:"#D4A0A0"},
+  {name:"Pastel Matte Malibu Peach",hex:"#FFCCB3"},{name:"Pastel Matte Nude Blush",hex:"#F8D2C0"},{name:"Deluxe Peach",hex:"#FFB0A8"},{name:"Neon Orange",hex:"#FF6A00"},{name:"Fashion Orange",hex:"#FC6C02"},{name:"Deluxe Sunset Orange",hex:"#FF7A2A"},
+  {name:"Deluxe Mocha",hex:"#8B6040"},{name:"Deluxe Coffee",hex:"#7C5030"},{name:"Deluxe Chocolate",hex:"#5A3018"},{name:"Reflex Truffle",hex:"#8C5F3E"},{name:"Fashion Red",hex:"#CC1020"},{name:"Metallic Starfire",hex:"#C41A30"},
+  {name:"Reflex Crystal Red",hex:"#E6002E"},{name:"Deluxe Imperial Red",hex:"#CC0000"},{name:"Deluxe Merlot",hex:"#800020"},{name:"Reflex Fuchsia",hex:"#E6007E"},{name:"Fashion Bubble Gum Pink",hex:"#FF69B4"},{name:"Pastel Matte Pink",hex:"#FAD0DA"},
+  {name:"Pastel Dusk Rose",hex:"#E8B8C8"},{name:"Deluxe Rosewood",hex:"#A04060"},{name:"Deluxe Tropical Coral",hex:"#FF7F50"},{name:"Deluxe Rose",hex:"#E08090"},{name:"Metallic Fuchsia",hex:"#CC0068"},{name:"Deluxe Fuchsia",hex:"#E6007E"},
+  {name:"Deluxe Raspberry",hex:"#C81E5E"},{name:"Neon Magenta",hex:"#FF0090"},{name:"Pearl Pink",hex:"#F0C0CC"},{name:"Silk Pink Blossom",hex:"#F8B8D0"},{name:"Reflex Pink",hex:"#FF69B4"},{name:"Reflex Rose Gold",hex:"#D4A0A0"},
+  {name:"Silk Light Amethyst",hex:"#B8A0C8"},{name:"Pastel Matte Lilac",hex:"#C8A0E0"},{name:"Deluxe Lilac",hex:"#B098C4"},{name:"Pastel Dusk Lavender",hex:"#B098C4"},{name:"Pearl Lilac",hex:"#C8A0E0"},{name:"Reflex Violet",hex:"#7B2880"},
+  {name:"Deluxe Purple Orchid",hex:"#9B2E7E"},{name:"Fashion Violet",hex:"#7B2880"},{name:"Deluxe Periwinkle Blue",hex:"#8C9EFF"},{name:"Fashion Navy",hex:"#14204A"},{name:"Reflex Blue",hex:"#0028C0"},{name:"Reflex Galaxy Blue",hex:"#1E3A8A"},
+  {name:"Deluxe Deep Teal",hex:"#008888"},{name:"Metallic Blue",hex:"#1848B0"},{name:"Fashion Royal Blue",hex:"#1848B0"},{name:"Silk Arctic Blue",hex:"#78A8D4"},{name:"Pastel Dusk Blue",hex:"#A8C8E0"},{name:"Neon Blue",hex:"#00B0FF"},
+  {name:"Fashion Blue",hex:"#78A8D4"},{name:"Deluxe Turquoise Blue",hex:"#18B0B0"},{name:"Pearl Blue",hex:"#C8E4F4"},{name:"Pastel Matte Blue",hex:"#B8D0E8"},{name:"Fashion Robin's Egg Blue",hex:"#78C8C8"},{name:"Pastel Matte Green",hex:"#B8E8C8"},
+  {name:"Neon Green",hex:"#88CC00"},{name:"Deluxe Key Lime",hex:"#B0E000"},{name:"Fashion Green",hex:"#008840"},{name:"Metallic Green",hex:"#2A6030"},{name:"Deluxe Shamrock Green",hex:"#008840"},{name:"Fashion Forest Green",hex:"#2A6030"},
+  {name:"Metallic Silver",hex:"#C8C8C8"},{name:"Silk Cream Pearl",hex:"#F5F0E8"},{name:"Reflex Silver",hex:"#B8B8C0"},{name:"Silk Midnight Grey",hex:"#5A5A5A"},{name:"Metallic Black",hex:"#2A2A2A"},{name:"Deluxe Black",hex:"#1A1A1A"}
+];
+
+const CLUSTER = [{id:0,cx:90,cy:50,r:26,size:"large"},{id:1,cx:64,cy:68,r:24,size:"large"},{id:2,cx:116,cy:72,r:25,size:"large"},{id:3,cx:52,cy:92,r:18,size:"medium"},{id:4,cx:88,cy:88,r:19,size:"medium"},{id:5,cx:124,cy:96,r:17,size:"medium"},{id:6,cx:68,cy:112,r:14,size:"small"},{id:7,cx:96,cy:116,r:15,size:"small"},{id:8,cx:116,cy:114,r:13,size:"small"}];
+
+const ARRANGEMENTS = [
+  {id:"cluster", name:"Cluster", balloons:CLUSTER},
+  {id:"column", name:"Column", balloons:[{id:0,cx:65,cy:25,r:22,size:"large"},{id:1,cx:115,cy:24,r:18,size:"medium"},{id:2,cx:65,cy:58,r:22,size:"large"},{id:3,cx:115,cy:57,r:18,size:"medium"},{id:4,cx:65,cy:91,r:22,size:"large"},{id:5,cx:115,cy:90,r:18,size:"medium"},{id:6,cx:65,cy:124,r:22,size:"large"},{id:7,cx:115,cy:123,r:18,size:"medium"},{id:8,cx:65,cy:152,r:14,size:"small"}]},
+  {id:"arch", name:"Arch", balloons:[{id:0,cx:25,cy:140,r:20,size:"large"},{id:1,cx:48,cy:112,r:16,size:"medium"},{id:2,cx:68,cy:82,r:20,size:"large"},{id:3,cx:90,cy:58,r:24,size:"large"},{id:4,cx:115,cy:58,r:20,size:"large"},{id:5,cx:136,cy:82,r:16,size:"medium"},{id:6,cx:156,cy:112,r:20,size:"large"},{id:7,cx:175,cy:140,r:16,size:"medium"}]}
+];
+
+const S = { arrIdx: 0, mainColor: null, accentColor: null, colors: {} };
+let currentFilter = '';
+let currentRow = 0;
+const ROW_SIZE = 6;
+
+const rows = [];
+for (let i = 0; i < COLORS.length; i += ROW_SIZE) {
+  rows.push(COLORS.slice(i, i + ROW_SIZE));
+}
+
+function arr() { return ARRANGEMENTS[S.arrIdx]; }
+
+// ====================== UNIQUE GRADIENT ID PER THUMBNAIL ======================
+let thumbnailId = 0;
+function renderMiniCluster(hex) {
+  const id = 'mini-' + (thumbnailId++);
+  return `<svg viewBox="0 0 100 90" style="width:100%;height:100%" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="${id}" cx="30%" cy="25%" r="80%">
+        <stop offset="0%" stop-color="#fff"/>
+        <stop offset="40%" stop-color="${hex}"/>
+        <stop offset="100%" stop-color="#ddd"/>
+      </radialGradient>
+    </defs>
+    <circle cx="48" cy="32" r="18" fill="url(#${id})" stroke="#333" stroke-width="2"/>
+    <circle cx="30" cy="48" r="16" fill="url(#${id})" stroke="#333" stroke-width="2"/>
+    <circle cx="68" cy="48" r="17" fill="url(#${id})" stroke="#333" stroke-width="2"/>
+    <circle cx="22" cy="66" r="12" fill="url(#${id})" stroke="#333" stroke-width="2"/>
+    <circle cx="48" cy="64" r="13" fill="url(#${id})" stroke="#333" stroke-width="2"/>
+    <circle cx="72" cy="68" r="11" fill="url(#${id})" stroke="#333" stroke-width="2"/>
+    <circle cx="35" cy="78" r="9" fill="url(#${id})" stroke="#333" stroke-width="2"/>
+    <circle cx="58" cy="80" r="10" fill="url(#${id})" stroke="#333" stroke-width="2"/>
+  </svg>`;
+}
+
+function previewColor(balloon) {
+  if (balloon.size === 'small' && S.accentColor) return S.accentColor.hex;
+  if (S.mainColor) return S.mainColor.hex;
+  return '#C8B8A8';
+}
+
+function lum(hex) {
+  const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+  return 0.299*r + 0.587*g + 0.114*b;
+}
+
+function gradDef(id, hex) {
+  if (!hex) hex = '#E5DED4';
+  const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+  const lo = `rgb(${Math.min(255,r+90)},${Math.min(255,g+90)},${Math.min(255,b+90)})`;
+  const hi = `rgb(${Math.max(0,r-70)},${Math.max(0,g-70)},${Math.max(0,b-70)})`;
+  return `<radialGradient id="g${id}" cx="30%" cy="25%" r="75%"><stop offset="0%" stop-color="${lo}"/><stop offset="35%" stop-color="${hex}"/><stop offset="100%" stop-color="${hi}"/></radialGradient>`;
+}
+
+function renderSVG() {
+  const svg = document.getElementById('bsvg');
+  const bs = arr().balloons;
+  const defs = bs.map(b => gradDef(b.id, S.colors[b.id])).join('');
+  const circles = bs.map(b => {
+    const hex = S.colors[b.id] || '#E5DED4';
+    const isLight = lum(hex) > 200;
+    const stroke = isLight ? 'rgba(0,0,0,.1)' : 'rgba(0,0,0,.15)';
+    return `<circle cx="${b.cx}" cy="${b.cy}" r="${b.r}" fill="url(#g${b.id})" stroke="${stroke}" stroke-width="0.5"/>`;
+  }).join('');
+  svg.innerHTML = `<defs>${defs}</defs>${circles}`;
+}
+
+function initColors() { S.colors = {}; autoFill(); }
+function autoFill() {
+  const bs = arr().balloons;
+  bs.forEach(b => {
+    if (b.size === 'small' && S.accentColor) S.colors[b.id] = S.accentColor.hex;
+    else if (S.mainColor) S.colors[b.id] = S.mainColor.hex;
+    else S.colors[b.id] = null;
+  });
+}
+
+function pickColor(name, hex) {
+  if (!S.mainColor) S.mainColor = {name, hex};
+  else if (S.mainColor.hex === hex && !S.accentColor) return;
+  else if (S.mainColor.hex === hex && S.accentColor) S.accentColor = null;
+  else if (!S.accentColor) S.accentColor = {name, hex};
+  else if (S.accentColor.hex === hex) S.accentColor = null;
+  else S.accentColor = {name, hex};
+  autoFill();
+  renderAll();
+}
+function clearMain() { event.stopPropagation(); S.mainColor = null; autoFill(); renderAll(); }
+function clearAccent() { event.stopPropagation(); S.accentColor = null; autoFill(); renderAll(); }
+function switchArr(i) { S.arrIdx = i; initColors(); renderAll(); }
+
+function renderColorGrid() {
+  const grid = document.getElementById('color-grid');
+  let displayColors = currentFilter 
+    ? COLORS.filter(c => c.name.toLowerCase().includes(currentFilter))
+    : (rows[currentRow] || []);
+  
+  grid.innerHTML = displayColors.map(c => {
+    const isMain = S.mainColor && S.mainColor.hex === c.hex;
+    const isAccent = S.accentColor && S.accentColor.hex === c.hex;
+    const activeClass = isMain ? ' active-main' : (isAccent ? ' active-accent' : '');
+    const badge = isMain ? '<span class="badge">MAIN</span>' : (isAccent ? '<span class="badge accent">ACCENT</span>' : '');
+    return `<div class="color-card${activeClass}" onclick="pickColor('${c.name.replace(/'/g,"\\'")}','${c.hex}')">
+      ${badge}
+      <div class="color-mini-cluster">${renderMiniCluster(c.hex)}</div>
+      <div class="color-name">${c.name}</div>
+    </div>`;
+  }).join('');
+}
+
+function updateRowIndicator() {
+  document.getElementById('row-indicator').textContent = `Row ${currentRow + 1} of ${rows.length}`;
+}
+
+function prevRow() {
+  if (currentRow > 0) { currentRow--; updateRowIndicator(); renderColorGrid(); }
+}
+function nextRow() {
+  if (currentRow < rows.length - 1) { currentRow++; updateRowIndicator(); renderColorGrid(); }
+}
+
+function renderSelections() {
+  const mBox = document.getElementById('main-box');
+  const aBox = document.getElementById('accent-box');
+  if (S.mainColor) {
+    mBox.className = 'sel-box filled';
+    mBox.innerHTML = `<div class="sel-mini">${renderMiniCluster(S.mainColor.hex)}</div><div class="sel-info"><div class="sel-name">${S.mainColor.name}</div></div><button class="sel-clear" onclick="clearMain()">×</button>`;
+  } else {
+    mBox.className = 'sel-box';
+    mBox.innerHTML = '<span class="sel-hint">Click a color below</span>';
+  }
+  if (S.accentColor) {
+    aBox.className = 'sel-box filled';
+    aBox.innerHTML = `<div class="sel-mini">${renderMiniCluster(S.accentColor.hex)}</div><div class="sel-info"><div class="sel-name">${S.accentColor.name}</div></div><button class="sel-clear" onclick="clearAccent()">×</button>`;
+  } else {
+    aBox.className = 'sel-box';
+    aBox.innerHTML = '<span class="sel-hint">Optional — click any color again</span>';
+  }
+}
+
+function renderThumbs() {
+  const strip = document.getElementById('arr-strip');
+  strip.innerHTML = ARRANGEMENTS.map((a, i) => {
+    const defs = a.balloons.map(b => gradDef('t'+i+'_'+b.id, previewColor(b))).join('');
+    const circles = a.balloons.map(b => {
+      const hex = previewColor(b);
+      const isLight = lum(hex) > 200;
+      const stroke = isLight ? 'rgba(0,0,0,.1)' : 'rgba(0,0,0,.15)';
+      return `<circle cx="${b.cx}" cy="${b.cy}" r="${b.r}" fill="url(#t${i}_${b.id})" stroke="${stroke}" stroke-width="0.5"/>`;
+    }).join('');
+    return `<div class="arr-thumb${i===S.arrIdx?' on':''}" onclick="switchArr(${i})">
+      <svg viewBox="0 0 180 160"><defs>${defs}</defs>${circles}</svg>
+      <span class="arr-name">${a.name}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderPlan() {
+  const counts = {};
+  arr().balloons.forEach(b => { const h = S.colors[b.id]; if (h) counts[h] = (counts[h]||0) + 1; });
+  const rowsEl = document.getElementById('plan-rows');
+  if (!Object.keys(counts).length) {
+    rowsEl.innerHTML = '<div class="plan-empty">Pick colors to see your order</div>';
+    return;
+  }
+  const names = {};
+  COLORS.forEach(c => names[c.hex] = c.name);
+  const sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+  rowsEl.innerHTML = sorted.map(([h, n]) =>
+    `<div class="plan-row"><div class="plan-dot" style="background:${h}"></div><span class="plan-name">${names[h]||h}</span><span class="plan-cnt">× ${n}</span></div>`
+  ).join('');
+}
+
+function copyPlan() {
+  const counts = {}, names = {};
+  COLORS.forEach(c => names[c.hex] = c.name);
+  arr().balloons.forEach(b => { const h = S.colors[b.id]; if (h) counts[h] = (counts[h]||0) + 1; });
+  const txt = Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([h,n]) => `${n}x ${names[h]||h}`).join('\n');
+  if (!txt) return;
+  navigator.clipboard.writeText(`${arr().name} — ${arr().balloons.length} balloons\n${txt}`).then(() => {
+    const b = document.getElementById('copy-btn');
+    b.textContent = 'Copied!';
+    setTimeout(() => b.textContent = 'Copy to clipboard', 1400);
+  });
+}
+
+function renderAll() {
+  renderThumbs();
+  renderSelections();
+  renderColorGrid();
+  renderSVG();
+  renderPlan();
+}
+
+function init() {
+  initColors();
+  renderAll();
+  updateRowIndicator();
+
+  const searchInput = document.getElementById('color-search');
+  searchInput.addEventListener('input', e => {
+    currentFilter = e.target.value.toLowerCase().trim();
+    renderColorGrid();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (currentFilter) return;
+    if (e.key === 'ArrowDown') { nextRow(); e.preventDefault(); }
+    if (e.key === 'ArrowUp') { prevRow(); e.preventDefault(); }
+  });
+}
+
+init();
+</script>
+</body>
+</html>
