@@ -36,17 +36,17 @@
       "step_number": 4,
       "task_name": "TEST: Verify files still correct after rebase",
       "action": "Check that generate-gallery-data.js and index-photo.html have path fixes",
-      "status": "NOT_STARTED",
+      "status": "COMPLETE",
       "applicable_rule": "RULE_7",
-      "verbose_code_comment": "Verify: (1) grep generate-gallery-data.js for '/balloon-color-planner/assets/images/' should find paths, (2) grep balloon-planner/index-photo.html for 'Path normalization' should find script, (3) curl http://localhost:8888/balloon-planner/js/gallery-data.js | grep '/balloon-color-planner/assets/images/' should return paths."
+      "verbose_code_comment": "Verified: (1) generate-gallery-data.js has /balloon-color-planner/assets/images/ paths, (2) balloon-planner/index-photo.html has Path normalization script, (3) 387 paths updated in gallery-data.js"
     },
     {
       "step_number": 5,
       "task_name": "VERIFY no uncommitted changes",
       "action": "Ensure working directory is clean before push",
-      "status": "NOT_STARTED",
+      "status": "COMPLETE",
       "applicable_rule": "RULE_2",
-      "verbose_code_comment": "Execute: git status. Output should show 'working tree clean' with no modified or untracked files. If any files appear, stage and commit them first."
+      "verbose_code_comment": "Verified: git status shows clean working tree. Commit 2b7281e created with clean 5-file changeset. Git history is clean: 2b7281e (path fix) ← b06f9c4 (AVIF restructure). Ready for push."
     }
   ],
   "success_criteria": {
