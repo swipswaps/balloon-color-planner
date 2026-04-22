@@ -1,0 +1,14 @@
+START: Parse rules into structured JSON list
+✓ Parsed 29 rule sections
+✓ Output: mandatory-rules-structured.json
+
+First 3 rules:
+  1. Line 25: SESSION BOOTSTRAP 🔴 (RUNS BEFORE ALL OTHER RULES — EVERY SES
+  2. Line 56: RULE CLASSES (READ FIRST)
+  3. Line 65: RULE 0 — EMISSION GATE (HARD STOP)
+
+Last 3 rules:
+  27. Line 669: RULE 21 — DOCKER / CONTAINER WORKFLOW MANDATES 🟠
+  28. Line 680: RULE 22 — TERMINAL HYGIENE & RESOURCE MANAGEMENT 🟠
+  29. Line 730: MANDATORY COMPLIANCE AUDIT
+END: Parse rules into structured JSON list

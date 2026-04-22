@@ -1,0 +1,12 @@
+START: Verify JSON file integrity
+✓ JSON is valid
+ources, file descriptors, and extension host memory\n- At scale (100+ terminals), this destabilizes the entire MCP tool pipeline\n- Recovery requires VS Code window reload or upgrade, wasting significant user time\n\n---\n\n## MANDATORY COMPLIANCE AUDIT\n\nEvery response must end with:\n\nCOMPLIANCE
+✓ Content length: 31365 bytes
+✓ Last 100 chars: YES / NO
+- Emission gate passed: YES / NO
+- Partial compliance: YES / NO
+- Task complete: YES / NO
+
+
+✓ File size check: $(stat -c%s mandatory-rules-v6.7.json) bytes
+END: Verify JSON file integrity

@@ -1,0 +1,165 @@
+{
+  "project": "Balloon Color Planner v2 - Shopify Dawn Pattern",
+  "philosophy": "HTML-first, progressive enhancement, minimal JavaScript",
+  "reference": "https://github.com/Shopify/dawn (3k stars)",
+  "problems_solved": [
+    "Black thumbnail backgrounds → transparent PNG (RGBA)",
+    "Only 11 arrangements → all 190 loaded",
+    "Horrible UX → proven Shopify pattern",
+    "Clicking thumbnail → nothing obvious → immediate photo update",
+    "Cramped layout → clean two-column grid"
+  ],
+  "architecture": {
+    "html": {
+      "structure": "Semantic form-based markup",
+      "pattern": "Radio buttons (hidden) + labels (visible swatches)",
+      "rationale": "Accessible, keyboard-navigable, no JS required for basic form",
+      "layout": {
+        "desktop": "grid-template-columns: 1.2fr 1fr (image left, controls right)",
+        "mobile": "grid-template-columns: 1fr (stacks vertically <750px)",
+        "gap": "40px desktop, 24px mobile"
+      }
+    },
+    "css": {
+      "philosophy": "CSS handles all visual states, minimal JS",
+      "patterns": [
+        "CSS variable: --accent for brand color (#e8006a)",
+        "Input:checked + label selector for active states",
+        "Border and box-shadow for visual feedback",
+        "Grid for color swatches (auto-fill)",
+        "Flexbox for gallery (horizontal scroll)"
+      ],
+      "key_selectors": {
+        "arrangement_active": ".arrangement-input:checked + .arrangement-swatch",
+        "color_active": ".color-input:checked + .color-swatch",
+        "hover_effects": "scale(1.08), box-shadow, translateY(-2px)"
+      }
+    },
+    "javascript": {
+      "philosophy": "Form handling only, no DOM manipulation for visuals",
+      "responsibilities": [
+        "Render radio inputs + labels from ARRANGEMENTS and PALETTE data",
+        "Listen to radio change events",
+        "Update hidden input values",
+        "Update image src and arrangement name",
+        "Update summary section",
+        "Handle copy-to-clipboard"
+      ],
+      "no_js_needed_for": [
+        "Active state styling (CSS :checked + sibling)",
+        "Hover effects (CSS :hover)",
+        "Layout (CSS Grid/Flexbox)",
+        "Mobile responsiveness (CSS media queries)"
+      ],
+      "event_flow": {
+        "user_clicks_swatch": [
+          "Browser checks radio input (no JS)",
+          "CSS applies :checked + label styles immediately",
+          "onChange fires → JS updates data",
+          "JS updates image and summary"
+        ]
+      }
+    }
+  },
+  "files": {
+    "index-photo-v2.html": {
+      "status": "✅ DONE",
+      "lines": 258,
+      "changes": [
+        "Semantic HTML form structure",
+        "Hidden radio inputs + visible label swatches",
+        "CSS Grid layout (1.2fr 1fr)",
+        "No .gallery-item or .color-btn divs needed",
+        "Form-native inputs for accessibility"
+      ],
+      "key_elements": {
+        "arrangements-group": "Container for <input type=\"radio\"> + <label class=\"arrangement-swatch\">",
+        "colors-group": "Container for <input type=\"radio\"> + <label class=\"color-swatch\">",
+        "product-image": "Single <img> tag (JS updates src)",
+        "summary": "Hidden div, shown when selections made"
+      }
+    },
+    "js/app-photo-v2.js": {
+      "status": "❌ NEEDS UPDATE (file still old version)",
+      "lines": "~170 (should be ~150)",
+      "approach": [
+        "Loop ARRANGEMENTS, create input + label pairs",
+        "Loop PALETTE, create input + label pairs",
+        "Attach change listeners to inputs",
+        "Update image src, arrangement name, summary on change"
+      ],
+      "functions": {
+        "renderArrangements()": "Create radio + label for each arrangement",
+        "renderColors()": "Create radio + label for each color",
+        "onArrangementChange(arr)": "Update image, name, summary",
+        "onColorChange(color)": "Update summary",
+        "updateSummary()": "Show selected items",
+        "copyToClipboard()": "Copy to clipboard with visual feedback"
+      },
+      "data_flow": "ARRANGEMENTS[].photo → <img src> (via JS)",
+      "state": "Two variables: selectedArrangement, selectedColor"
+    },
+    "js/arrangements-photo.js": {
+      "status": "✅ ALREADY EXISTS",
+      "contains": "All 190 arrangements with photo paths",
+      "format": "Array of objects: { id, name, thumb, photo }"
+    },
+    "js/palette.js": {
+      "status": "✅ ALREADY EXISTS",
+      "contains": "All 27 colors with hex codes",
+      "format": "Array of objects: { name, hex }"
+    },
+    "balloon-thumbnails/png-transparent/": {
+      "status": "✅ ALREADY EXISTS",
+      "contains": "190 transparent PNG files (RGBA verified)",
+      "used_for": "arrangement.thumb and arrangement.photo"
+    }
+  },
+  "ux_flow": {
+    "step_1_page_load": {
+      "html": "Form renders with all arrangements as radio inputs",
+      "css": "Swatches display in horizontal gallery",
+      "js": "Attaches event listeners, auto-selects first"
+    },
+    "step_2_user_clicks_arrangement": {
+      "css": "Label shows pink border + shadow immediately",
+      "js": "onChange fires → updates image src, name, summary",
+      "result": "Large photo updates, arrangement name shows"
+    },
+    "step_3_user_clicks_color": {
+      "css": "Color swatch shows pink border immediately",
+      "js": "onChange fires → updates summary",
+      "result": "Order summary updates with color name + swatch"
+    },
+    "step_4_user_clicks_copy": {
+      "js": "Gathers selected arrangement + color",
+      "action": "navigator.clipboard.writeText()",
+      "feedback": "Button changes to '✓ Copied!' (green) for 2s",
+      "result": "Text copied to clipboard"
+    }
+  },
+  "technical_decisions": {
+    "why_radio_buttons": "Semantic HTML, keyboard accessible, native form support, no custom event handling needed",
+    "why_css_checked": "Instant visual feedback, no JS needed for styling, works without JavaScript",
+    "why_two_variables": "Tracks user selections for summary and copy function",
+    "why_lazy_loading": "img.loading='lazy' for performance with 190 images",
+    "why_no_web_components": "Simpler than Shopify (they use <product-form>), not needed for this use case"
+  },
+  "testing_checklist": [
+    "✅ Load v2 in browser",
+    "✅ Click arrangement → photo updates",
+    "✅ Click color → summary updates",
+    "✅ Click copy → clipboard contains text",
+    "✅ Copy button shows '✓ Copied!' feedback",
+    "✅ Mobile view stacks correctly (<750px)",
+    "✅ All 190 arrangements load without error",
+    "✅ All 27 colors appear and work",
+    "✅ No console errors",
+    "✅ Hover effects smooth"
+  ],
+  "deployment": {
+    "option_a": "Replace v1: mv index-photo-v2.html → index-photo.html",
+    "option_b": "Keep both: v1 at /index-photo.html, v2 at /index-photo-v2.html",
+    "option_c": "Set v2 as default: Update links, keep v1 as fallback"
+  }
+}

@@ -1,0 +1,12 @@
+START: Verify photo picker is running and test basic functionality
+=== Check if server is still running ===
+<title>Balloon Color Planner — The Balloon Lady</title>
+=== Verify key elements load ===
+11
+=== Test thumbnail images load ===
+balloon-thumbnails/webp/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2.webp
+balloon-thumbnails/webp/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2.webp
+balloon-thumbnails/webp/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2_002.webp
+balloon-thumbnails/webp/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2_002.webp
+balloon-thumbnails/webp/0e982e_37bc5d544c95452bbc87e9644cc4e5c0~mv2.webp
+END: Server verification

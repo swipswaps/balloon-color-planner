@@ -1,0 +1,38 @@
+START: Analyze script design and impact on process spawning
+=== Script Analysis ===
+SCRIPT ANALYSIS: Do Watchdog Scripts Cause Process Spawning?
+
+1. SCRIPT OPERATIONS (All bash-only, NO external commands):
+   ✓ Read/write file operations only
+   ✓ Bash string pattern matching only ([[ ]] conditionals)
+   ✓ Bash builtins only (no grep, ps, pgrep, cat, etc.)
+   ✓ Exit codes returned (no process spawning)
+
+2. What Each Script Does:
+   • terminal-watchdog.sh: Reads .log file, checks for markers, exits
+   • pre-response-check.sh: Reads .log file, checks markers, exits
+   • pre-stop-watchdog.sh: Reads .log file, checks markers, exits
+
+3. Impact on Process Tree:
+   ❌ NO zygote spawning - Scripts use only bash builtins
+   ❌ NO terminal spawning - Scripts don't call system commands
+   ❌ NO child processes - No external process execution
+   ✓ Minimal overhead - Just bash string operations
+
+4. Where Terminals/Zygotes Actually Come From:
+   ✅ Terminals (pts) - Spawned by VS Code terminal feature
+   ✅ Zygotes - Spawned by VS Code main process for sandboxing
+   ✅ Extensions - Loaded by VS Code extension host (PID 3276746)
+   ✓ NOT the watchdog scripts
+
+5. Terminal Count in Process Tree (from previous check):
+   • pts/0 through pts/8 = 9 terminal instances
+   • These are created by VS Code's built-in terminal, NOT scripts
+   • Scripts are ONLY called within these terminals (not spawning them)
+
+CONCLUSION: The .augment/ watchdog scripts DO NOT cause:
+   ❌ Zygote process spawning
+   ❌ Additional terminal spawning
+   ❌ Resource consumption beyond bash string operations
+   ✅ They are deliberately designed with "bash builtins ONLY" requirement
+END: Analysis complete

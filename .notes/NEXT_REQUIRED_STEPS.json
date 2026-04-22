@@ -1,0 +1,152 @@
+{
+  "project": "Balloon Color Planner - Complete Implementation",
+  "current_state": {
+    "v1_index_photo_html": "exists (6.9K) - enhanced UX version",
+    "v2_index_photo_v2_html": "exists (5.5K) - Shopify pattern (not yet fully tested)",
+    "arrangements_photo_js": "190 arrangements (verified)",
+    "palette_js": "27 colors (verified)",
+    "png_transparent": "191 transparent PNGs (verified RGBA)",
+    "server": "running on localhost:8888"
+  },
+  "next_required_steps": [
+    {
+      "step": 1,
+      "task": "Test v1 (current production) in browser",
+      "action": "Click arrangements → verify photo updates",
+      "verification": [
+        "Navigate to http://localhost:8888/balloon-planner/index-photo.html",
+        "Check: thumbnails have transparent backgrounds",
+        "Check: clicking thumbnail updates main photo",
+        "Check: clicking color updates summary",
+        "Check: copy button works and shows feedback"
+      ],
+      "applicable_rules": [
+        "RULE 7 (Evidence Before Assertion): Must capture browser state",
+        "RULE 2 (No Partial Compliance): Testing is mandatory before acceptance",
+        "RULE 16 (Complete Workflow Testing): Requires local verification"
+      ],
+      "expected_evidence": "Browser screenshots or console output showing working interactions"
+    },
+    {
+      "step": 2,
+      "task": "Test v2 (Shopify pattern) in browser",
+      "action": "Click arrangements → verify photo updates using CSS :checked pattern",
+      "verification": [
+        "Navigate to http://localhost:8888/balloon-planner/index-photo-v2.html",
+        "Check: radio input + label pattern renders",
+        "Check: clicking swatch shows pink border (CSS active state)",
+        "Check: main image updates on arrangement click",
+        "Check: all 190 arrangements load without error",
+        "Check: all 27 colors display",
+        "Check: copy button works"
+      ],
+      "applicable_rules": [
+        "RULE 7 (Evidence Before Assertion): All claims must have proof",
+        "RULE 2 (No Partial Compliance): Must fully test both paths",
+        "RULE 6 (Known-Working Code Only): v2 must prove it works before acceptance"
+      ],
+      "expected_evidence": "Actual browser test results showing v2 working or failures"
+    },
+    {
+      "step": 3,
+      "task": "Compare v1 vs v2 functionality",
+      "action": "Test both versions side-by-side",
+      "verification": [
+        "List what works in v1 that doesn't work in v2",
+        "List what works in v2 that doesn't work in v1",
+        "Identify any broken functionality",
+        "Determine which version is production-ready"
+      ],
+      "applicable_rules": [
+        "RULE 3 (No Silent Regression): Cannot lose functionality between versions",
+        "RULE 7 (Evidence Before Assertion): Comparison must show actual behavior"
+      ],
+      "expected_evidence": "Comparison table with working/broken features for each version"
+    },
+    {
+      "step": 4,
+      "task": "Fix any broken functionality in chosen version",
+      "action": "If v1 works, use v1. If v2 works better, debug v2 to match or exceed v1",
+      "verification": [
+        "All 190 arrangements load",
+        "Clicking arrangement updates photo",
+        "Clicking color updates summary",
+        "Copy button works with feedback",
+        "Mobile responsive layout works",
+        "No console errors"
+      ],
+      "applicable_rules": [
+        "RULE 2 (No Partial Compliance): Fix ALL issues before completing",
+        "RULE 6 (Known-Working Code Only): Code must work, not just theoretically sound",
+        "RULE 13 (Self-Audit Before Emission): Check for regressions"
+      ],
+      "expected_evidence": "Browser console with no errors, all interactions working"
+    },
+    {
+      "step": 5,
+      "task": "Commit changes to git",
+      "action": "git add + git commit with meaningful message",
+      "verification": [
+        "All code changes staged",
+        "Commit message explains what changed and why",
+        "No uncommitted changes remain"
+      ],
+      "applicable_rules": [
+        "RULE 2 (No Partial Compliance): Commit is step 4 in workflow",
+        "RULE 16 (Complete Workflow Testing): Must commit after local testing passes"
+      ],
+      "expected_evidence": "git log showing new commit with both files updated"
+    },
+    {
+      "step": 6,
+      "task": "Push to GitHub",
+      "action": "git push origin main (or configured branch)",
+      "verification": [
+        "Changes appear on GitHub",
+        "GitHub Actions auto-deployment triggers (if configured)",
+        "No merge conflicts"
+      ],
+      "applicable_rules": [
+        "RULE 2 (No Partial Compliance): Push is step 5 in workflow",
+        "RULE 16 (Complete Workflow Testing): Must push after commit succeeds"
+      ],
+      "expected_evidence": "GitHub repo shows new commits + GitHub Actions running"
+    },
+    {
+      "step": 7,
+      "task": "Verify in production",
+      "action": "Test deployed site in real environment",
+      "verification": [
+        "Navigate to live URL (if deployed)",
+        "All functionality works in production",
+        "No errors in production console",
+        "Images load from CDN/server",
+        "Mobile layout works on real device"
+      ],
+      "applicable_rules": [
+        "RULE 2 (No Partial Compliance): Step 7 in mandatory workflow",
+        "RULE 7 (Evidence Before Assertion): Must show production working",
+        "RULE 16 (Complete Workflow Testing): Production verification is required"
+      ],
+      "expected_evidence": "Screenshots/video of live production site working"
+    }
+  ],
+  "rule_index": {
+    "RULE_0": "EMISSION_GATE - No output until all instructions satisfied + no partial compliance",
+    "RULE_2": "NO_PARTIAL_COMPLIANCE - Continue until 100% done or user says stop",
+    "RULE_3": "NO_SILENT_REGRESSION - Cannot lose features without authorization",
+    "RULE_4": "MODE_LOCKING - Execution mode: do the task, don't plan/discuss",
+    "RULE_5": "NO_CLARIFICATION_AFTER_EXPLICIT - User request is immutable",
+    "RULE_6": "KNOWN_WORKING_CODE_ONLY - All code must be proven syntactically valid",
+    "RULE_7": "EVIDENCE_BEFORE_ASSERTION - All claims require logs/tests/proof",
+    "RULE_13": "SELF_AUDIT_BEFORE_EMISSION - Check for removals/changes/fabrications",
+    "RULE_16": "COMPLETE_WORKFLOW_TESTING - Code→Build→Test→Commit→Push→Deploy→Verify"
+  },
+  "critical_constraint": {
+    "rule": "RULE_2 - NO_PARTIAL_COMPLIANCE",
+    "text": "Stopping after step 1 (test) = VIOLATION",
+    "text_2": "Must complete all 7 steps or user says 'stop'",
+    "text_3": "Testing without commit/push/deploy verification = INCOMPLETE",
+    "consequence": "Human would be fired for incomplete work"
+  }
+}

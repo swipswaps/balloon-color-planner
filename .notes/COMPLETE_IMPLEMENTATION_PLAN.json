@@ -1,0 +1,112 @@
+{
+  "title": "COMPLETE BALLOON PLANNER REBUILD - ALL 190 ARRANGEMENTS WITH COLOR FILTERING",
+  "user_requirement": "Show all 190 arrangements. Color buttons filter which arrangements are visible. Proper gallery layout.",
+  "compliance_rules": {
+    "RULE_0": "EMISSION_GATE - Will not output until all steps complete with evidence",
+    "RULE_2": "NO_PARTIAL_COMPLIANCE - Will complete all 7 workflow steps: code → build → test local → commit → push → deploy → verify",
+    "RULE_6": "KNOWN_WORKING_CODE_ONLY - Using proven Swiper + Fancybox pattern",
+    "RULE_7": "EVIDENCE_BEFORE_ASSERTION - Will show curl verification before claiming success",
+    "RULE_16": "COMPLETE_WORKFLOW_TESTING - Must test locally with evidence before commit"
+  },
+  "steps": [
+    {
+      "step_number": 1,
+      "task_name": "ANALYZE existing arrangements-photo.js to understand color relationships",
+      "action": "Read arrangements-photo.js (190 items) and identify which arrangement belongs to which color family",
+      "input": "arrangements-photo.js with 190 arrangements",
+      "output": "Understand data structure: each arrangement has id, name, thumb, photo, description",
+      "applicable_rules": ["RULE_6 - KNOWN_WORKING_CODE_ONLY", "RULE_7 - EVIDENCE_BEFORE_ASSERTION"],
+      "verbose_code_comment": "Parse arrangement data to map: arrangement_id -> color_family. Since arrangements don't have explicit color field, will use naming patterns or create mapping based on visual grouping from original data."
+    },
+    {
+      "step_number": 2,
+      "task_name": "CREATE mapping: which arrangements belong to which color family",
+      "action": "Generate color_family_mapping.json that groups all 190 arrangements by their color families (White & Cream, Gold & Champagne, etc.)",
+      "input": "arrangements-photo.js (190 items) + palette.js (7 color groups)",
+      "output": "color_family_mapping.json with structure: { 'white-cream': [arr1, arr2...], 'pink-fuchsia': [...], ... }",
+      "applicable_rules": ["RULE_6 - KNOWN_WORKING_CODE_ONLY", "RULE_13 - SELF_AUDIT_BEFORE_EMISSION"],
+      "verbose_code_comment": "Build accurate color family grouping. Since original arrangements.js doesn't have color metadata, will create mapping based on file naming patterns or sequential grouping. This mapping is CRITICAL for filtering functionality."
+    },
+    {
+      "step_number": 3,
+      "task_name": "REWRITE gallery-data.js to include ALL 190 arrangements",
+      "action": "Populate defaultGallery.images with ALL 190 arrangement photos. Populate colorCollections with filtered subsets.",
+      "input": "arrangements-photo.js + color_family_mapping.json",
+      "output": "gallery-data.js with defaultGallery containing 190 images + colorCollections with filtered arrangements per color",
+      "applicable_rules": ["RULE_6 - KNOWN_WORKING_CODE_ONLY", "RULE_3 - NO_SILENT_REGRESSION"],
+      "verbose_code_comment": "Generate gallery-data.js programmatically from arrangements.js. Structure: defaultGallery.images = [all 190 photos], colorCollections[slug].images = [filtered by color]. This is the DATA LAYER that drives everything."
+    },
+    {
+      "step_number": 4,
+      "task_name": "UPDATE main.js to handle 190 items + color filtering",
+      "action": "Modify renderCollection() and color swatch click handler to correctly filter and display arrangement subsets",
+      "input": "Updated gallery-data.js with 190 arrangements",
+      "output": "main.js that properly initializes Swiper with correct slide count and syncs color selection state",
+      "applicable_rules": ["RULE_6 - KNOWN_WORKING_CODE_ONLY", "RULE_7 - EVIDENCE_BEFORE_ASSERTION"],
+      "verbose_code_comment": "Ensure main.js handles large dataset (190 items). Check: Swiper initialization with proper breakpoints, thumb sync for 190 slides, DOM memory efficiency, event listener cleanup. Test color click -> filters gallery correctly."
+    },
+    {
+      "step_number": 5,
+      "task_name": "TEST locally: Verify page renders, galleries load, filtering works",
+      "action": "Use curl to verify HTML loads, all 190 images are referenced, color swatches render, Swiper initializes",
+      "input": "Running server on localhost:8888 + updated files",
+      "output": "Curl verification showing HTTP 200s, no console errors, functionality confirmed",
+      "applicable_rules": ["RULE_7 - EVIDENCE_BEFORE_ASSERTION", "RULE_16 - COMPLETE_WORKFLOW_TESTING"],
+      "verbose_code_comment": "Local test with evidence: curl GET page, check for 190 image references, verify color filter buttons exist, confirm Swiper library loads, validate no JavaScript syntax errors in main.js"
+    },
+    {
+      "step_number": 6,
+      "task_name": "GIT COMMIT all changes",
+      "action": "Stage and commit: gallery-data.js (190 arrangements), main.js (filtering logic), CSS (if updated)",
+      "input": "Modified files: gallery-data.js, main.js",
+      "output": "Git commit with message describing changes",
+      "applicable_rules": ["RULE_2 - NO_PARTIAL_COMPLIANCE (workflow step 5 of 7)", "RULE_16 - COMPLETE_WORKFLOW_TESTING"],
+      "verbose_code_comment": "Commit message must explain: 'Populate gallery with all 190 balloon arrangements. Add color family filtering. Arrange by color group: White/Cream, Gold/Champagne, Brown/Mocha, Pink/Fuchsia, Purple, Navy, Grey/Silver. Each color family shows filtered arrangement subset when selected.'"
+    },
+    {
+      "step_number": 7,
+      "task_name": "GIT PUSH to GitHub",
+      "action": "git push origin main (or default branch)",
+      "input": "Local git commits",
+      "output": "Changes pushed to GitHub",
+      "applicable_rules": ["RULE_2 - NO_PARTIAL_COMPLIANCE (workflow step 6 of 7)", "RULE_16 - COMPLETE_WORKFLOW_TESTING"],
+      "verbose_code_comment": "Push to remote. This triggers any configured auto-deploy to production. Verify: 'git log --oneline' shows new commit, GitHub repo reflects changes."
+    },
+    {
+      "step_number": 8,
+      "task_name": "VERIFY production: Test live app, confirm 190 arrangements load, color filtering works",
+      "action": "Test deployed app: can see galleries, click colors, arrangements filter correctly",
+      "input": "Deployed application URL",
+      "output": "Evidence of working production app with all 190 arrangements visible",
+      "applicable_rules": ["RULE_2 - NO_PARTIAL_COMPLIANCE (workflow step 7 of 7)", "RULE_7 - EVIDENCE_BEFORE_ASSERTION"],
+      "verbose_code_comment": "Production verification: gallery loads, thumbnails appear, click color button -> gallery changes to show only arrangements in that color family. Confirm: responsive on mobile, no console errors, Swiper works, Fancybox zoom works."
+    }
+  ],
+  "success_criteria": {
+    "must_have": [
+      "All 190 balloon arrangements visible in defaultGallery",
+      "Color family buttons filter gallery to show only that color's arrangements",
+      "Swiper gallery + thumbnails work with large dataset",
+      "Reset button returns to viewing all 190 arrangements",
+      "No console errors",
+      "Responsive layout (mobile + desktop)",
+      "Local test passes with curl verification",
+      "Production deployment succeeds"
+    ],
+    "acceptance_test": "Click 'Pink & Fuchsia' -> gallery shows only pink/fuchsia arrangements. Click 'Reset' -> gallery shows all 190. Click thumbnail -> main image updates. Click arrangement photo -> lightbox opens."
+  },
+  "data_structure_example": {
+    "gallery_data_format": {
+      "defaultGallery": {
+        "images": ["url_arr_001.png", "url_arr_002.png", "...190 total..."]
+      },
+      "colorCollections": {
+        "pink-fuchsia": {
+          "label": "Pink & Fuchsia",
+          "swatch": "thumbnail_url.png",
+          "images": ["url_arr_X.png", "url_arr_Y.png", "...only pink arrangements..."]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+START: Final file verification
+-rw-r--r--. 1 owner owner 32K Apr 22 13:43 mandatory-rules-v6.7.json
+  Size: 32711     	Blocks: 64         IO Block: 4096   regular file
+
+✓ JSON structure complete
+✓ Keys: ['file', 'source', 'content']
+✓ Content type: str
+✓ Content length: 31365 bytes
+✓ Content lines: 741
+
+✓ First 80 chars: ---
+# Mandatory Rules for AI Assistant Interactions
+
+**Version:** 6.7
+
+**v6.7 Ch
+✓ Last 80 chars: gate passed: YES / NO
+- Partial compliance: YES / NO
+- Task complete: YES / NO
+
+
+
+✓ File is COMPLETE - no truncation
+END: Final file verification

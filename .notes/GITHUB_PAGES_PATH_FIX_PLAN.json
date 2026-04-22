@@ -8,34 +8,118 @@
     "RULE_16: COMPLETE_WORKFLOW_TESTING - Local test + GitHub Pages verification",
     "RULE_6: KNOWN_WORKING_CODE_ONLY - Path normalization proven pattern"
   ],
-  "implementation": {
-    "step_1": "Update generate-gallery-data.js to use /balloon-color-planner/assets/images/ prefix",
-    "step_2": "Regenerate balloon-planner/js/gallery-data.js with new paths",
-    "step_3": "Add path normalization script to balloon-planner/index-photo.html",
-    "step_4": "Test locally - verify all 190 images load and color filtering works",
-    "step_5": "Commit changes with git",
-    "step_6": "Push to GitHub to trigger GitHub Actions deployment",
-    "step_7": "Verify on GitHub Pages - test https://swipswaps.github.io/balloon-color-planner/"
-  },
+  "steps": [
+    {
+      "step_number": 1,
+      "task_name": "UPDATE generator script for GitHub Pages paths",
+      "action": "Modify generate-gallery-data.js to use /balloon-color-planner/assets/images/ prefix",
+      "status": "COMPLETE",
+      "applicable_rule": "RULE_6",
+      "verbose_code_comment": "Change path generation from './assets/images/filename.avif' to '/balloon-color-planner/assets/images/filename.avif'. This makes paths absolute from domain root, which matches GitHub Pages URL structure."
+    },
+    {
+      "step_number": 2,
+      "task_name": "REGENERATE gallery-data.js with new paths",
+      "action": "Run node generate-gallery-data.js to update all 190 image paths",
+      "status": "COMPLETE",
+      "applicable_rule": "RULE_6",
+      "verbose_code_comment": "Execute generator to apply new path format to all images. Verify: 387 path references updated (190 images × 2 - default + color collections), all contain /balloon-color-planner/ prefix"
+    },
+    {
+      "step_number": 3,
+      "task_name": "ADD path normalization script to index-photo.html",
+      "action": "Insert <script> before js/main.js that detects local vs GitHub Pages and converts paths",
+      "status": "COMPLETE",
+      "applicable_rule": "RULE_6",
+      "verbose_code_comment": "Add IIFE that: (1) detects if running on GitHub Pages by checking window.location.pathname for 'balloon-color-planner', (2) if NOT GitHub Pages (local dev), convert all paths from /balloon-color-planner/assets/images/ → ./assets/images/, (3) applies to defaultGallery.images AND all colorCollections. This ensures local dev works with relative paths while GitHub Pages works with absolute paths."
+    },
+    {
+      "step_number": 4,
+      "task_name": "LOCAL TEST: Verify page loads with correct paths",
+      "action": "Test http://localhost:8888/balloon-planner/index-photo.html - should load gallery with images",
+      "expected_result": "HTTP 200, gallery displays AVIF thumbnails, color filtering works",
+      "status": "NOT_STARTED",
+      "applicable_rule": "RULE_7: EVIDENCE_BEFORE_ASSERTION",
+      "verbose_code_comment": "Test locally: (1) curl index-photo.html → HTTP 200, (2) check console DevTools F12 for no 404s, (3) verify images load (should show converted ./assets/images/ paths at runtime), (4) click color swatches - gallery should filter correctly"
+    },
+    {
+      "step_number": 5,
+      "task_name": "LOCAL TEST: Verify browser DevTools shows no 404s",
+      "action": "Open browser DevTools Network tab, reload page, check for failed image requests",
+      "expected_result": "All AVIF files load (HTTP 200), no 404 errors in Network tab",
+      "status": "NOT_STARTED",
+      "applicable_rule": "RULE_7: EVIDENCE_BEFORE_ASSERTION",
+      "verbose_code_comment": "Visual verification: Open http://localhost:8888/balloon-planner/index-photo.html in browser, press F12, go to Network tab, reload. All resources should show 200 status. Check for any failed requests to /assets/images/. If any 404s appear, path normalization failed."
+    },
+    {
+      "step_number": 6,
+      "task_name": "LOCAL TEST: Verify color filtering works",
+      "action": "Click color swatch buttons and verify gallery updates with correct subset",
+      "expected_result": "All 7 color families clickable, gallery shows correct arrangement count for each",
+      "status": "NOT_STARTED",
+      "applicable_rule": "RULE_16: COMPLETE_WORKFLOW_TESTING",
+      "verbose_code_comment": "Functional test: (1) Page loads all 190 arrangements, (2) Click 'White & Cream' → gallery shows 30 images, (3) Click 'Pink & Fuchsia' → gallery shows 50 images, (4) Click Reset → shows all 190 again, (5) Click arrangement thumbnail → main image updates, (6) No console errors in F12"
+    },
+    {
+      "step_number": 7,
+      "task_name": "GIT COMMIT path fixes",
+      "action": "Stage generate-gallery-data.js and index-photo.html, commit with descriptive message",
+      "status": "NOT_STARTED",
+      "applicable_rule": "RULE_2: NO_PARTIAL_COMPLIANCE (workflow: edit → test → commit → push → verify)",
+      "verbose_code_comment": "Commit after local tests pass. Message: 'fix: Update image paths for GitHub Pages deployment. Change paths from relative ./assets/images/ to absolute /balloon-color-planner/assets/images/. Add runtime path normalization for local dev compatibility. Fixes 404 errors on GitHub Pages.'"
+    },
+    {
+      "step_number": 8,
+      "task_name": "GIT PUSH to GitHub",
+      "action": "Push to remote repository (triggers GitHub Actions deploy)",
+      "status": "NOT_STARTED",
+      "applicable_rule": "RULE_2: NO_PARTIAL_COMPLIANCE",
+      "verbose_code_comment": "Push commits to GitHub. GitHub Actions workflow will deploy changes to GitHub Pages. Wait for deployment to complete (check Actions tab)."
+    },
+    {
+      "step_number": 9,
+      "task_name": "GITHUB PAGES VERIFICATION: Test deployed site",
+      "action": "Open https://swipswaps.github.io/balloon-color-planner/ and verify images load",
+      "expected_result": "Page loads, all AVIF thumbnails visible and smooth, no broken images",
+      "status": "NOT_STARTED",
+      "applicable_rule": "RULE_7: EVIDENCE_BEFORE_ASSERTION",
+      "verbose_code_comment": "Production verification on GitHub Pages: (1) Open https://swipswaps.github.io/balloon-color-planner/index-photo.html, (2) Wait for gallery to load (all 190 images), (3) Open DevTools Network tab, verify all images have 200 status, (4) Check for any 404 or CORS errors, (5) Verify no broken image icons (x in corners)"
+    },
+    {
+      "step_number": 10,
+      "task_name": "GITHUB PAGES TEST: Verify color filtering",
+      "action": "Click color swatches on live GitHub Pages site",
+      "expected_result": "Gallery filters correctly, shows correct subset for each color family",
+      "status": "NOT_STARTED",
+      "applicable_rule": "RULE_3: NO_SILENT_REGRESSION",
+      "verbose_code_comment": "Functional test on production: (1) Click 'White & Cream' swatch → see 30 images, (2) Click 'Navy' swatch → see 10 images, (3) Click Reset button → see all 190 again, (4) Click thumbnails to navigate, (5) No console errors in DevTools"
+    },
+    {
+      "step_number": 11,
+      "task_name": "DOCUMENT: Create summary of changes",
+      "action": "Create .notes/GITHUB_PAGES_FIX_COMPLETE.md with verification results",
+      "status": "NOT_STARTED",
+      "applicable_rule": "RULE_7: EVIDENCE_BEFORE_ASSERTION",
+      "verbose_code_comment": "After all tests pass (local + GitHub Pages), document: (1) What paths were changed and why, (2) How runtime normalization works, (3) Evidence of successful deployment (screenshots or curl output), (4) Confirmation that both local dev and GitHub Pages work"
+    }
+  ],
   "success_criteria": {
     "local_dev": [
       "http://localhost:8888/balloon-planner/ loads HTTP 200",
       "No 404 errors in browser Network tab",
-      "All 190 AVIF thumbnails display",
+      "All 190 AVIF thumbnails display smoothly",
       "Color filtering works (all 7 color families)",
-      "Path normalization script converts /balloon-color-planner/ → ./ paths"
+      "Reset button shows all 190 arrangements",
+      "No console errors"
     ],
     "github_pages": [
       "https://swipswaps.github.io/balloon-color-planner/ loads",
-      "All images load with HTTP 200 status",
+      "All AVIF images load (HTTP 200 status)",
+      "No 404 or CORS errors in Network tab",
       "Gallery displays smooth AVIF edges (no blocky artifacts)",
-      "Color filtering works",
-      "No 404 or CORS errors"
+      "Color swatches clickable and filter correctly",
+      "All 7 color families present",
+      "Reset button returns to viewing all 190"
     ]
-  },
-  "files_changed": [
-    "generate-gallery-data.js - Updated to use /balloon-color-planner/ prefix",
-    "balloon-planner/js/gallery-data.js - Regenerated with 387 absolute paths",
-    "balloon-planner/index-photo.html - Added path normalization IIFE script"
-  ]
+  }
 }

@@ -1,0 +1,32 @@
+START: Investigate zygote process spawning in VS Code
+=== 1. Check VS Code extensions that might spawn processes ===
+augment.vscode-augment-0.840.6
+augment.vscode-augment-0.859.0
+extensions.json
+github.copilot-chat-0.44.2
+prf-compliance.hidden-terminal-watchdog-1.1.2
+=== 2. Check augment extension specifically ===
+/home/owner/.vscode/extensions/augment.vscode-augment-0.840.6
+/home/owner/.vscode/extensions/augment.vscode-augment-0.859.0
+=== 3. VS Code settings file ===
+{
+  "extensions.autoUpdate": false,
+
+  "workbench.settings.applyToAllProfiles": [
+    "augment.completions.enableChatInputCompletions"
+  ],
+
+  "augment.completions.enableChatInputCompletions": false,
+
+  "chat.extensionUnification.enabled": false,
+  "chat.disableAIFeatures": false,
+
+  "github.copilot.enable": false,
+  "github.copilot.inlineSuggest.enable": false,
+
+  "git.enabled": true,
+  "git.autofetch": false,
+
+  "vscode-augment.featureFlags.enableRemoteAgents": false,
+
+END: Zygote investigation

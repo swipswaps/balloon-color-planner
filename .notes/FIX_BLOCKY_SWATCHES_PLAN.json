@@ -1,0 +1,116 @@
+{
+  "problem": "Color swatch buttons have hard square corners, visible borders, blocky appearance. Images look pixelated with border artifacts.",
+  "root_cause": "CSS: hard borders, insufficient border-radius, image rendering issues with object-fit",
+  "solution": "Improve swatch CSS: smooth corners, no visible borders on default state, better image rendering",
+  "applicable_rules": [
+    "RULE_6: KNOWN_WORKING_CODE_ONLY - Use proven CSS patterns for image thumbnails",
+    "RULE_7: EVIDENCE_BEFORE_ASSERTION - Test swatch rendering with curl before committing",
+    "RULE_16: COMPLETE_WORKFLOW_TESTING - Test locally with visual verification before push"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "task": "Analyze current CSS for swatch-btn styling",
+      "action": "View balloon-planner/css/style.css and identify all .swatch-btn rules",
+      "input": "Current CSS file",
+      "output": "Understand current: border-radius value, border width/color, padding, overflow",
+      "rule": "RULE_6 - KNOWN_WORKING_CODE_ONLY",
+      "verbose_comment": "Current CSS has border-radius: 14px which should be smooth, but visible 1px border and hard edges on images suggest object-fit or padding issues. Will check if border is too visible on default state (not hover/active)."
+    },
+    {
+      "step": 2,
+      "task": "Update CSS: Remove visible borders, increase border-radius, improve image rendering",
+      "action": "Modify .swatch-btn CSS: increase border-radius to 18-20px, make default border very subtle or transparent, improve image rendering with image-rendering CSS property",
+      "input": "Current style.css",
+      "output": "Updated style.css with improved swatch styling",
+      "rule": "RULE_6 - KNOWN_WORKING_CODE_ONLY",
+      "verbose_comment": "Changes: (1) border-radius: 18px for smooth circles, (2) border: 1px solid transparent (instead of var(--line)) for default state - border only visible on hover/active, (3) add image-rendering: crisp-edges or contain to prevent pixelation, (4) remove/reduce padding inside swatch to show full image, (5) add subtle box-shadow on default state instead of border"
+    },
+    {
+      "step": 3,
+      "task": "Update swatch HTML/styling in main.js if needed",
+      "action": "Check if main.js creates swatch buttons correctly with proper sizing. Ensure images fill the button completely.",
+      "input": "main.js renderSwatches() function",
+      "output": "Verify or update: button sizing is consistent, image doesn't have margins, CSS selectors are correct",
+      "rule": "RULE_6 - KNOWN_WORKING_CODE_ONLY",
+      "verbose_comment": "renderSwatches() creates button elements with img children. Need to verify: (1) button width/height are equal (58px), (2) img fills 100% of button (no padding affecting layout), (3) object-fit: cover ensures image fills without distortion"
+    },
+    {
+      "step": 4,
+      "task": "Test swatch rendering locally with curl",
+      "action": "Fetch HTML, verify CSS is loaded correctly, check for syntax errors",
+      "input": "Running server + updated CSS file",
+      "output": "Curl verification showing CSS HTTP 200, no syntax errors",
+      "rule": "RULE_7 - EVIDENCE_BEFORE_ASSERTION",
+      "verbose_comment": "Use curl to verify: (1) style.css loads HTTP 200, (2) CSS has no syntax errors (can check with CSS linter if available), (3) HTML references correct CSS file in <link> tag"
+    },
+    {
+      "step": 5,
+      "task": "Visual test: Check swatch appearance in browser",
+      "action": "Open page in browser, look at color swatches - should be smooth circles with subtle borders only on hover/active, images should be clear and sharp",
+      "input": "http://localhost:8888/balloon-planner/index-photo.html",
+      "output": "Visual confirmation: swatches are smooth, not blocky, images are clear",
+      "rule": "RULE_16 - COMPLETE_WORKFLOW_TESTING",
+      "verbose_comment": "User will see: (1) Default swatch: smooth rounded button with subtle shadow, thin/transparent border, clear balloon image, (2) Hover: slight lift/shadow increase, (3) Active/selected: colored border + shadow highlight, (4) No pixelation, no hard edges, professional appearance"
+    },
+    {
+      "step": 6,
+      "task": "Verify 190 arrangements still load and filter correctly",
+      "action": "Test gallery functionality: click color swatch -> gallery filters, click reset -> shows all 190",
+      "input": "Updated CSS + existing gallery-data.js and main.js",
+      "output": "Confirmation: filtering still works, no regression in functionality",
+      "rule": "RULE_3 - NO_SILENT_REGRESSION",
+      "verbose_comment": "CSS-only change should not break functionality. But verify: (1) color swatches clickable (test each color), (2) gallery updates when swatch clicked, (3) reset button works, (4) no JavaScript console errors"
+    },
+    {
+      "step": 7,
+      "task": "GIT COMMIT with description of swatch improvements",
+      "action": "Stage and commit CSS changes with message explaining swatch smoothing",
+      "input": "Modified style.css",
+      "output": "Git commit with message describing visual improvements",
+      "rule": "RULE_2 - NO_PARTIAL_COMPLIANCE (workflow step 5 of 7)",
+      "verbose_comment": "Commit message: 'style: Improve swatch button appearance - smooth rounded corners, subtle default borders, clear image rendering. Remove hard edges and pixelation artifacts.'"
+    },
+    {
+      "step": 8,
+      "task": "GIT PUSH to GitHub",
+      "action": "git push origin master (or main)",
+      "input": "Local git commits",
+      "output": "Changes pushed to remote",
+      "rule": "RULE_2 - NO_PARTIAL_COMPLIANCE (workflow step 6 of 7)",
+      "verbose_comment": "Push to GitHub. If auto-deploy configured, production will update automatically."
+    },
+    {
+      "step": 9,
+      "task": "VERIFY production: Check swatch appearance and functionality",
+      "action": "Test live app: swatches are smooth/professional, colors work, filtering works",
+      "input": "Deployed application",
+      "output": "Visual confirmation on production that swatches look polished",
+      "rule": "RULE_2 - NO_PARTIAL_COMPLIANCE (workflow step 7 of 7)",
+      "verbose_comment": "Production verification: (1) Swatches appear smooth without blocky edges, (2) Images are clear and sharp, (3) Color filtering still works correctly, (4) Responsive on mobile, (5) No console errors"
+    }
+  ],
+  "css_changes_summary": {
+    "swatch_btn_before": {
+      "border": "1px solid var(--line)",
+      "border_radius": "14px",
+      "issue": "Visible line border makes edges look hard/blocky"
+    },
+    "swatch_btn_after": {
+      "border": "1px solid transparent",
+      "border_radius": "18px",
+      "box_shadow": "0 2px 4px rgba(0,0,0,0.08)",
+      "image_rendering": "crisp-edges",
+      "improvement": "Transparent border hides by default, smooth 18px radius, subtle shadow adds depth, crisp-edges prevents blurring"
+    },
+    "swatch_btn_hover_after": {
+      "box_shadow": "0 4px 8px rgba(0,0,0,0.12)",
+      "improvement": "Increased shadow on hover without border flash"
+    },
+    "swatch_btn_active_after": {
+      "border": "1px solid var(--brand)",
+      "box_shadow": "0 0 0 3px var(--brand-shadow), 0 4px 8px rgba(0,0,0,0.12)",
+      "improvement": "Border and shadow activate only when selected, not default"
+    }
+  }
+}

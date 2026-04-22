@@ -1,0 +1,25 @@
+START: Display JSON structure sample
+JSON Structure:
+============================================================
+Metadata keys: ['file', 'source', 'total_characters', 'total_lines', 'conversion_note']
+
+Metadata content:
+  file: mandatory-rules-v6.7.md
+  source: /home/owner/.augment/rules/mandatory-rules-v6.7.md
+  total_characters: 31365
+  total_lines: 742
+  conversion_note: Complete markdown-to-JSON conversion without truncation
+
+Rules content length: 31365 characters
+First 200 characters of rules:
+---
+# Mandatory Rules for AI Assistant Interactions
+
+**Version:** 6.7
+
+**v6.7 Changes over v6.6:**
+- SESSION BOOTSTRAP block added — runs before all other rules
+- Fixed second `max_wait_seconds=3` occ
+
+✓ JSON contains complete markdown without truncation
+END: Display JSON structure sample

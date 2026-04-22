@@ -1,0 +1,29 @@
+START: Investigate balloon picker AVIF thumbnails issue
+=== Check AVIF files ===
+-rw-r--r--. 1 owner owner  13K Apr 21 18:29 balloon-thumbnails/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2_002.avif
+-rw-r--r--. 1 owner owner  11K Apr 21 18:29 balloon-thumbnails/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2_003.avif
+-rw-r--r--. 1 owner owner  11K Apr 21 18:29 balloon-thumbnails/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2_004.avif
+-rw-r--r--. 1 owner owner 9.9K Apr 21 18:29 balloon-thumbnails/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2_005.avif
+-rw-r--r--. 1 owner owner  12K Apr 21 18:29 balloon-thumbnails/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2_006.avif
+-rw-r--r--. 1 owner owner  11K Apr 21 18:29 balloon-thumbnails/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2_007.avif
+-rw-r--r--. 1 owner owner  12K Apr 21 18:29 balloon-thumbnails/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2_008.avif
+-rw-r--r--. 1 owner owner  13K Apr 21 18:29 balloon-thumbnails/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2_009.avif
+-rw-r--r--. 1 owner owner 6.5K Apr 21 18:29 balloon-thumbnails/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2_010.avif
+-rw-r--r--. 1 owner owner 5.8K Apr 21 18:29 balloon-thumbnails/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2_011.avif
+=== AVIF file count ===
+190
+=== Check for corrupted or zero-size files ===
+0
+=== Sample AVIF file info ===
+balloon-thumbnails/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2_002.avif: ISO Media, AVIF Image
+balloon-thumbnails/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2_003.avif: ISO Media, AVIF Image
+balloon-thumbnails/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2_004.avif: ISO Media, AVIF Image
+balloon-thumbnails/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2_005.avif: ISO Media, AVIF Image
+balloon-thumbnails/0e982e_0d857f17a26343fa94cb72ad494ceba4~mv2_006.avif: ISO Media, AVIF Image
+=== Check balloon planner HTML ===
+-rw-r--r--. 1 owner owner 25K Apr 21 15:21 balloon-planner/index_0002.html
+-rw-r--r--. 1 owner owner 35K Apr 21 15:21 balloon-planner/index_0003.html
+-rw-r--r--. 1 owner owner 38K Apr 21 15:21 balloon-planner/index_0004.html
+-rw-r--r--. 1 owner owner 38K Apr 21 15:21 balloon-planner/index_0005.html
+-rw-r--r--. 1 owner owner 21K Apr 21 15:21 balloon-planner/index_0006.html
+END: AVIF investigation

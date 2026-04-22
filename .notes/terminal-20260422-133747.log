@@ -1,0 +1,7 @@
+START: Convert markdown rules to JSON
+✓ Conversion complete
+✓ Source characters: 31365
+✓ Source lines: 742
+✓ Output: /home/owner/Documents/633e9483-8ceb-4a0c-b0d8-798f8437f6eb/mandatory-rules-v6.7.json
+✓ JSON file size: 32509 bytes
+END: Convert markdown rules to JSON

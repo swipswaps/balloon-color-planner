@@ -1,0 +1,4 @@
+START: Fix script permissions and run watchdog
+.augment/scripts/terminal-watchdog.sh: line 8: syntax error near unexpected token `2'
+.augment/scripts/terminal-watchdog.sh: line 8: `for f in .notes/terminal-*.log 2>/dev/null; do'
+END: Watchdog complete

@@ -1,0 +1,108 @@
+{
+  "title": "REBUILD USING PROVEN coowinit PATTERN",
+  "principle": "STOP trying to fix broken v1/v2. USE proven working code from GitHub. Execute one way, test, commit, deploy.",
+  "critical_rule": "RULE 5 - NO_CLARIFICATION_AFTER_EXPLICIT: User said 'use other popular logic' and 'stop wasting turns breaking the project'. This is explicit. Execute it.",
+  "steps": [
+    {
+      "step": 1,
+      "name": "DELETE broken v1 and v2 files",
+      "files_to_delete": [
+        "balloon-planner/index-photo-v2.html",
+        "balloon-planner/js/app-photo-v2.js",
+        "balloon-planner/index-photo.html (replace, not delete)",
+        "balloon-planner/js/app-photo.js (replace, not delete)"
+      ],
+      "rationale": "v1 and v2 are broken. Start fresh with proven pattern.",
+      "rule": "RULE 3 - NO_SILENT_REGRESSION: Removes broken code instead of keeping it"
+    },
+    {
+      "step": 2,
+      "name": "Create NEW index.html using coowinit pattern",
+      "action": "Adapt coowinit HTML structure for balloon planner data",
+      "key_changes": [
+        "Bootstrap 5 grid layout (left: gallery, right: swatches)",
+        "Swiper.js for main image + thumbnails",
+        "Color swatches as image buttons",
+        "Fancybox lightbox integration",
+        "Reset button to show default arrangement gallery"
+      ],
+      "rule": "RULE 6 - KNOWN_WORKING_CODE_ONLY"
+    },
+    {
+      "step": 3,
+      "name": "Create gallery-data.js from balloon data",
+      "action": "Convert arrangements + colors into coowinit data structure",
+      "structure": {
+        "defaultGallery": {
+          "images": ["array of all 190 arrangement photos"]
+        },
+        "colorCollections": {
+          "white-cream": { "label": "White & Cream", "swatch": "thumb.png", "images": [] },
+          "pink-fuchsia": { "label": "Pink & Fuchsia", "swatch": "thumb.png", "images": [] }
+        }
+      },
+      "rule": "RULE 6 - KNOWN_WORKING_CODE_ONLY"
+    },
+    {
+      "step": 4,
+      "name": "Create main.js (use coowinit code)",
+      "action": "Copy coowinit main.js, adapt for balloon data structure",
+      "rule": "RULE 6 - KNOWN_WORKING_CODE_ONLY"
+    },
+    {
+      "step": 5,
+      "name": "Create style.css (use coowinit pattern)",
+      "action": "Copy coowinit CSS, customize colors for balloon brand",
+      "rule": "RULE 6 - KNOWN_WORKING_CODE_ONLY"
+    },
+    {
+      "step": 6,
+      "name": "TEST in browser",
+      "test_cases": [
+        "Page loads without console errors",
+        "Click arrangement thumbnail → main photo updates",
+        "Click color swatch → gallery changes to that color's arrangements",
+        "Click reset → back to default gallery",
+        "Click main photo → lightbox opens (Fancybox)",
+        "Responsive on mobile (thumbnails reduce)"
+      ],
+      "rule": "RULE 7 - EVIDENCE_BEFORE_ASSERTION"
+    },
+    {
+      "step": 7,
+      "name": "GIT COMMIT",
+      "action": "git add . && git commit -m 'Rebuild: Use proven coowinit gallery pattern with Swiper + Fancybox'",
+      "rule": "RULE 2 - NO_PARTIAL_COMPLIANCE (step 5 of 7)"
+    },
+    {
+      "step": 8,
+      "name": "GIT PUSH",
+      "action": "git push origin main",
+      "rule": "RULE 2 - NO_PARTIAL_COMPLIANCE (step 6 of 7)"
+    },
+    {
+      "step": 9,
+      "name": "VERIFY production",
+      "action": "Test live URL, confirm working",
+      "rule": "RULE 2 - NO_PARTIAL_COMPLIANCE (step 7 of 7)"
+    }
+  ],
+  "libraries_needed": [
+    "Bootstrap 5.3.3 (CDN)",
+    "Swiper 11 (CDN)",
+    "Fancybox 3.5.7 (CDN)",
+    "jQuery 3.7.1 (for Fancybox)"
+  ],
+  "data_structure_mapping": {
+    "arrangements": "190 items → maps to defaultGallery.images (all photos)",
+    "colors": "27 items → maps to colorCollections keys (each color group = separate gallery)",
+    "result": "User can view all arrangements, OR filter by color to see only that color's arrangements"
+  },
+  "lessons_learned": [
+    "Do NOT experiment on working code",
+    "DO find proven working code first (coowinit)",
+    "DO use it exactly as-is, then adapt data structures",
+    "DO test immediately after adaptation",
+    "DO commit and deploy, not iterate endlessly"
+  ]
+}

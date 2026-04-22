@@ -1,0 +1,4 @@
+START: Check JSON file for truncation
+32878 mandatory-rules-v6.7.json
+ AUDIT:\n- Rules applied: 0-22\n- Evidence provided: YES / NO / N/A\n- Violations detected: YES / NO\n- Emission gate passed: YES / NO\n- Partial compliance: YES / NO\n- Task complete: YES / NO\n\n"
+}END: Check JSON file for truncation

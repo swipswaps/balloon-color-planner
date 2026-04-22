@@ -1,0 +1,53 @@
+START: Find zygote spawning sources
+=== Check VS Code processes and parent relationships ===
+2660047       1 /usr/share/code/code .
+2660060 2660047  \_ /usr/share/code/code --type=zygote --no-zygote-sandbox
+2660092 2660060  |   \_ /usr/share/code/code --type=zygote --no-zygote-sandbox
+2660061 2660047  \_ /usr/share/code/code --type=zygote
+2660063 2660061  |   \_ /usr/share/code/code --type=zygote
+2660170 2660063  |       \_ /usr/share/code/code --type=zygote
+3276773 2660063  |       \_ /usr/share/code/code --type=zygote
+2660100 2660047  \_ /proc/self/exe --type=utility --utility-sub-type=network.mojom.NetworkService --lang=en-US --service-sandbox-type=none --enable-crash-reporter=741f12a7-424b-40ff-8537-932730d3f209,no_channel --user-data-dir=/home/owner/.config/Code --standard-schemes=vscode-webview,vscode-file --enable-sandbox --secure-schemes=vscode-webview,vscode-file --cors-schemes=vscode-webview,vscode-file --fetch-schemes=vscode-webview,vscode-file --service-worker-schemes=vscode-webview --code-cache-schemes=vscode-webview,vscode-file --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,13244553083485051040,6434230862641829282,262144 --enable-features=DocumentPolicyIncludeJSCallStacksInCrashReports,EarlyEstablishGpuChannel,EstablishGpuChannelAsync --disable-features=CalculateNativeWinOcclusion,LocalNetworkAccessChecks,ScreenAIOCREnabled,SpareRendererForSitePerProcess,TraceSiteInstanceGetProcessCreation --variations-seed-version --trace-process-track-uuid=3190708989122997041
+2660234 2660047  \_ /proc/self/exe --type=utility --utility-sub-type=node.mojom.NodeService --lang=en-US --service-sandbox-type=none --js-flags=--nodecommit_pooled_pages --enable-crash-reporter=741f12a7-424b-40ff-8537-932730d3f209,no_channel --user-data-dir=/home/owner/.config/Code --standard-schemes=vscode-webview,vscode-file --enable-sandbox --secure-schemes=vscode-webview,vscode-file --cors-schemes=vscode-webview,vscode-file --fetch-schemes=vscode-webview,vscode-file --service-worker-schemes=vscode-webview --code-cache-schemes=vscode-webview,vscode-file --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,13244553083485051040,6434230862641829282,262144 --enable-features=DocumentPolicyIncludeJSCallStacksInCrashReports,EarlyEstablishGpuChannel,EstablishGpuChannelAsync --disable-features=CalculateNativeWinOcclusion,LocalNetworkAccessChecks,ScreenAIOCREnabled,SpareRendererForSitePerProcess,TraceSiteInstanceGetProcessCreation --variations-seed-version --trace-process-track-uuid=3190708990997080739
+2660538 2660047  \_ /proc/self/exe --type=utility --utility-sub-type=node.mojom.NodeService --lang=en-US --service-sandbox-type=none --js-flags=--nodecommit_pooled_pages --enable-crash-reporter=741f12a7-424b-40ff-8537-932730d3f209,no_channel --user-data-dir=/home/owner/.config/Code --standard-schemes=vscode-webview,vscode-file --enable-sandbox --secure-schemes=vscode-webview,vscode-file --cors-schemes=vscode-webview,vscode-file --fetch-schemes=vscode-webview,vscode-file --service-worker-schemes=vscode-webview --code-cache-schemes=vscode-webview,vscode-file --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,13244553083485051040,6434230862641829282,262144 --enable-features=DocumentPolicyIncludeJSCallStacksInCrashReports,EarlyEstablishGpuChannel,EstablishGpuChannelAsync --disable-features=CalculateNativeWinOcclusion,LocalNetworkAccessChecks,ScreenAIOCREnabled,SpareRendererForSitePerProcess,TraceSiteInstanceGetProcessCreation --variations-seed-version --trace-process-track-uuid=3190708993808206286
+3277932 2660538  |   \_ /bin/bash --init-file /usr/share/code/resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-bash.sh
+3278936 3277946  |               \_ grep --color=auto -E code|zygote
+3276746 2660047  \_ /proc/self/exe --type=utility --utility-sub-type=node.mojom.NodeService --lang=en-US --service-sandbox-type=none --dns-result-order=ipv4first --experimental-network-inspection --inspect-port=0 --js-flags=--nodecommit_pooled_pages --enable-crash-reporter=741f12a7-424b-40ff-8537-932730d3f209,no_channel --user-data-dir=/home/owner/.config/Code --standard-schemes=vscode-webview,vscode-file --enable-sandbox --secure-schemes=vscode-webview,vscode-file --cors-schemes=vscode-webview,vscode-file --fetch-schemes=vscode-webview,vscode-file --service-worker-schemes=vscode-webview --code-cache-schemes=vscode-webview,vscode-file --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,13244553083485051040,6434230862641829282,262144 --enable-features=DocumentPolicyIncludeJSCallStacksInCrashReports,EarlyEstablishGpuChannel,EstablishGpuChannelAsync --disable-features=CalculateNativeWinOcclusion,LocalNetworkAccessChecks,ScreenAIOCREnabled,SpareRendererForSitePerProcess,TraceSiteInstanceGetProcessCreation --variations-seed-version --trace-process-track-uuid=3190709001304541078
+3277054 3276746  |   \_ /usr/share/code/code /usr/share/code/resources/app/extensions/json-language-features/server/dist/node/jsonServerMain --node-ipc --clientProcessId=3276746
+3276774 2660047  \_ /proc/self/exe --type=utility --utility-sub-type=node.mojom.NodeService --lang=en-US --service-sandbox-type=none --js-flags=--nodecommit_pooled_pages --enable-crash-reporter=741f12a7-424b-40ff-8537-932730d3f209,no_channel --user-data-dir=/home/owner/.config/Code --standard-schemes=vscode-webview,vscode-file --enable-sandbox --secure-schemes=vscode-webview,vscode-file --cors-schemes=vscode-webview,vscode-file --fetch-schemes=vscode-webview,vscode-file --service-worker-schemes=vscode-webview --code-cache-schemes=vscode-webview,vscode-file --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,13244553083485051040,6434230862641829282,262144 --enable-features=DocumentPolicyIncludeJSCallStacksInCrashReports,EarlyEstablishGpuChannel,EstablishGpuChannelAsync --disable-features=CalculateNativeWinOcclusion,LocalNetworkAccessChecks,ScreenAIOCREnabled,SpareRendererForSitePerProcess,TraceSiteInstanceGetProcessCreation --variations-seed-version --trace-process-track-uuid=3190709003178624776
+=== VS Code configuration files ===
+/home/owner/.config/Code/User/globalStorage/emptyWindowChatSessions/72641cb7-5f2d-4d74-9eac-2738b7b11784.json
+/home/owner/.config/Code/User/globalStorage/vscode.terminal-suggest/terminal-suggest/terminalSuggestGlobalsCacheV2.json
+/home/owner/.config/Code/User/globalStorage/augment.vscode-augment/augment-global-state/terminalSettings.json
+/home/owner/.config/Code/User/globalStorage/storage.json
+/home/owner/.config/Code/User/workspaceStorage/fc223fe4439a06f55623ad6484213990/workspace.json
+/home/owner/.config/Code/User/workspaceStorage/47ac86c1d4576e65d18a15d451f0458e/workspace.json
+/home/owner/.config/Code/User/workspaceStorage/cda3883bdf8e604bbf90e3afe29180ee/workspace.json
+/home/owner/.config/Code/User/workspaceStorage/cda3883bdf8e604bbf90e3afe29180ee/Augment.vscode-augment/augment-global-state/gitCommitIndexerState.json
+/home/owner/.config/Code/User/workspaceStorage/cda3883bdf8e604bbf90e3afe29180ee/Augment.vscode-augment/augment-global-state/fuzzyFsFilesIndex.json
+/home/owner/.config/Code/User/workspaceStorage/cda3883bdf8e604bbf90e3afe29180ee/Augment.vscode-augment/augment-global-state/fuzzyFsFoldersIndex.json
+=== VS Code settings ===
+total 76
+drwxr-xr-x. 1 owner owner  1170 Apr 17 18:01 .
+drwx------. 1 owner owner  1526 Apr 22 14:07 ..
+-rw-r--r--. 1 owner owner     2 Feb  9 15:49 chatLanguageModels.json
+drwxr-xr-x. 1 owner owner   340 Apr 22 14:06 globalStorage
+drwxr-xr-x. 1 owner owner 12832 Apr 22 12:50 History
+-rw-r--r--. 1 owner owner  1359 Apr 17 18:22 settings.json
+-rw-r--r--. 1 owner owner   877 Feb 11 21:11 settings.json.backup-2026-02-11-2111
+-rw-r--r--. 1 owner owner    37 Feb 18 10:43 settings.json.backup-20260218-104354
+-rw-r--r--. 1 owner owner   199 Feb 19 12:12 settings.json.backup-20260219-121208
+-rw-r--r--. 1 owner owner   303 Mar  1 11:00 settings.json.backup-20260301-110037
+-rw-r--r--. 1 owner owner   410 Mar 10 10:23 settings.json.bak
+-rw-r--r--. 1 owner owner   729 Mar 12 09:38 settings.json.bak-20260312-093847
+-rw-r--r--. 1 owner owner   995 Mar 12 10:29 settings.json.bak-watchdog-20260312-102904
+-rw-r--r--. 1 owner owner  1243 Mar 12 11:53 settings.json.bak-watchdog-20260312-115044
+-rw-r--r--. 1 owner owner  1243 Mar 12 11:56 settings.json.bak-watchdog-20260312-115604
+-rw-r--r--. 1 owner owner  1243 Mar 12 11:56 settings.json.bak-watchdog-20260312-115631
+-rw-r--r--. 1 owner owner  1243 Mar 12 11:58 settings.json.bak-watchdog-20260312-115802
+-rw-r--r--. 1 owner owner  1243 Mar 12 15:33 settings.json.bak-watchdog-20260312-153336
+-rw-r--r--. 1 owner owner  1243 Mar 12 15:50 settings.json.bak-watchdog-20260312-155001
+-rw-r--r--. 1 owner owner    62 Mar  1 11:00 settings.json.new
+drwxr-xr-x. 1 owner owner     0 Sep 25  2025 snippets
+drwxr-xr-x. 1 owner owner   640 Apr 21 15:30 workspaceStorage
+END: Find zygote spawning sources

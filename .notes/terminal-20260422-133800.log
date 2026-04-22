@@ -1,0 +1,5 @@
+START: Validate JSON file
+✓ JSON is valid and well-formed
+-rw-r--r--. 1 owner owner 33K Apr 22 13:37 /home/owner/Documents/633e9483-8ceb-4a0c-b0d8-798f8437f6eb/mandatory-rules-v6.7.json
+✓ File exists and readable
+END: Validate JSON file

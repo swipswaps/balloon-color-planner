@@ -1,0 +1,8 @@
+START: Generate complete JSON
+✓ File written: /home/owner/Documents/633e9483-8ceb-4a0c-b0d8-798f8437f6eb/mandatory-rules-v6.7.json
+✓ Markdown bytes: 31365
+✓ JSON bytes: 32342
+✓ Markdown lines: 741
+✓ JSON verified valid
+✓ Content key size: 31365 bytes
+END: Generate complete JSON

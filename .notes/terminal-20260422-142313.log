@@ -1,0 +1,3 @@
+START: Run fixed watchdog
+[WATCHDOG_FAIL] Missing START
+END: Watchdog run

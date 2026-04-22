@@ -1,0 +1,65 @@
+START: Check which HTML file uses AVIF and what the actual issue is
+=== Search for any image references in all HTML files ===
+File: balloon-planner/index_0002.html
+4
+File: balloon-planner/index_0003.html
+4
+File: balloon-planner/index_0004.html
+4
+File: balloon-planner/index_0005.html
+4
+File: balloon-planner/index_0006.html
+0
+0
+File: balloon-planner/index_0007.html
+0
+0
+File: balloon-planner/index_0008.html
+0
+0
+File: balloon-planner/index_0009.html
+0
+0
+File: balloon-planner/index_0010.html
+0
+0
+File: balloon-planner/index_0011.html
+0
+0
+File: balloon-planner/index_0012.html
+0
+0
+File: balloon-planner/index_0013.html
+0
+0
+File: balloon-planner/index_0014.html
+0
+0
+File: balloon-planner/index_0015.html
+0
+0
+File: balloon-planner/index.html
+0
+0
+=== Check if any HTML file is larger (might have embedded images) ===
+-rw-r--r--. 1 owner owner 38K Apr 21 15:21 balloon-planner/index_0004.html
+-rw-r--r--. 1 owner owner 38K Apr 21 15:21 balloon-planner/index_0005.html
+-rw-r--r--. 1 owner owner 35K Apr 21 15:21 balloon-planner/index_0003.html
+-rw-r--r--. 1 owner owner 25K Apr 21 15:21 balloon-planner/index_0002.html
+-rw-r--r--. 1 owner owner 21K Apr 21 15:21 balloon-planner/index_0006.html
+-rw-r--r--. 1 owner owner 21K Apr 21 15:21 balloon-planner/index_0007.html
+-rw-r--r--. 1 owner owner 20K Apr 21 15:21 balloon-planner/index_0008.html
+-rw-r--r--. 1 owner owner 20K Apr 21 15:21 balloon-planner/index_0009.html
+-rw-r--r--. 1 owner owner 20K Apr 21 15:21 balloon-planner/index_0014.html
+-rw-r--r--. 1 owner owner 20K Apr 21 15:21 balloon-planner/index_0015.html
+-rw-r--r--. 1 owner owner 20K Apr 21 15:21 balloon-planner/index_0013.html
+-rw-r--r--. 1 owner owner 20K Apr 21 15:21 balloon-planner/index_0011.html
+-rw-r--r--. 1 owner owner 20K Apr 21 15:21 balloon-planner/index_0012.html
+-rw-r--r--. 1 owner owner 17K Apr 21 15:21 balloon-planner/index.html
+-rw-r--r--. 1 owner owner 16K Apr 21 15:21 balloon-planner/index_0010.html
+=== Search all HTML for base64 or data: URIs ===
+balloon-planner/index_0002.html
+balloon-planner/index_0003.html
+balloon-planner/index_0004.html
+balloon-planner/index_0005.html
+END: Image reference check

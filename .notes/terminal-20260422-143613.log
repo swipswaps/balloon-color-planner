@@ -1,0 +1,25 @@
+START: Investigate if watchdog scripts cause process spawning
+=== List .augment scripts ===
+-rwxr-xr-x. 1 owner owner 957 Apr 22 12:54 .augment/scripts/install-global.sh
+-rwxr-xr-x. 1 owner owner 459 Apr 22 14:28 .augment/scripts/pre-response-check.sh
+-rwxr-xr-x. 1 owner owner 462 Apr 22 14:28 .augment/scripts/pre-stop-watchdog.sh
+-rwxr-xr-x. 1 owner owner 767 Apr 22 14:23 .augment/scripts/terminal-watchdog.sh
+=== Script content summary ===
+  31 .augment/scripts/install-global.sh
+  16 .augment/scripts/pre-response-check.sh
+  16 .augment/scripts/pre-stop-watchdog.sh
+  20 .augment/scripts/terminal-watchdog.sh
+  83 total
+=== Check if scripts are currently running ===
+=== Check if any bash subshells spawned by scripts ===
+root         953  0.0  0.0 232024  3780 ?        Ss   Apr17   0:31 /bin/bash /usr/local/sbin/usbip-autoattach.sh
+owner       8659  0.0  0.0   8688   780 ?        Ss   Apr17   0:00          \_ /usr/bin/ssh-agent /bin/sh -c exec -l /bin/bash -c "startxfce4"
+owner      10792  0.0  0.0 236576  4016 pts/0    Ss+  Apr17   0:00  \_ bash
+owner      36659  0.0  0.0 236060  5936 pts/2    Ss+  Apr17   0:00  \_ bash
+owner    3276810  0.0  0.1 236076  8484 pts/1    Ss+  14:05   0:00  |   \_ /bin/bash --noprofile
+owner    3277932  0.0  0.0 232624  4868 pts/4    Ss   14:06   0:00  |   \_ /bin/bash --init-file /usr/share/code/resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-bash.sh
+owner    3277946  0.0  0.1 236076  8476 pts/5    Ss+  14:06   0:00  |   |       \_ bash -i
+owner    3286883  0.0  0.0 232624  4876 pts/6    Ss   14:22   0:00  |   \_ /bin/bash --init-file /usr/share/code/resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-bash.sh
+owner    3286897  0.0  0.1 236076  8484 pts/7    Ss+  14:22   0:00  |   |       \_ bash -i
+owner    3294072  0.0  0.0 232624  4800 pts/8    Ss   14:36   0:00  |   \_ /bin/bash --init-file /usr/share/code/resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-bash.sh
+END: Script analysis

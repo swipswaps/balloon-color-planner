@@ -1,0 +1,11 @@
+START: Check current task status and system state
+=== Recent log files ===
+.notes/terminal-20260422-142841.log
+.notes/terminal-20260422-142832.log
+.notes/terminal-20260422-142757.log
+.notes/terminal-20260422-142313.log
+.notes/terminal-20260422-142252.log
+=== Check for any active work ===
+=== Check for any running processes ===
+15
+END: Status check

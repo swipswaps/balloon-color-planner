@@ -1,0 +1,35 @@
+START: Parse all 741 rules from markdown into JSON
+✓ Parsed 29 rule sections from 741 lines
+✓ Output: mandatory-rules-v6.7.json
+
+Section breakdown:
+   1. Lines  25- 55 ( 31 lines): SESSION BOOTSTRAP 🔴 (RUNS BEFORE ALL OTHER RULES — EVERY SESSION)
+   2. Lines  56- 64 (  9 lines): RULE CLASSES (READ FIRST)
+   3. Lines  65- 94 ( 30 lines): RULE 0 — EMISSION GATE (HARD STOP)
+   4. Lines  95-100 (  6 lines): RULE 1 — FULL ARTIFACT EMISSION
+   5. Lines 101-148 ( 48 lines): RULE 2 — NO PARTIAL COMPLIANCE
+   6. Lines 149-154 (  6 lines): RULE 3 — NO SILENT REGRESSION
+   7. Lines 155-161 (  7 lines): RULE 4 — MODE LOCKING
+   8. Lines 162-167 (  6 lines): RULE 5 — NO CLARIFICATION AFTER EXPLICIT STATEMENTS
+   9. Lines 168-178 ( 11 lines): RULE 6 — KNOWN-WORKING CODE ONLY (UPDATED)
+  10. Lines 179-184 (  6 lines): RULE 7 — EVIDENCE BEFORE ASSERTION
+  11. Lines 185-220 ( 36 lines): RULE 8 — PROCESS OUTPUT CAPTURE RELIABILITY
+  12. Lines 221-428 (208 lines): RULE 9 — MANDATORY OUTPUT READING (ZERO EXCEPTIONS)
+  13. Lines 429-463 ( 35 lines): RULE 9B — Tool Name Accuracy (ZERO TOLERANCE)
+  14. Lines 464-522 ( 59 lines): RULE 9C — File Editing with Corrupted Content (ZERO TOLERANCE)
+  15. Lines 523-551 ( 29 lines): RULE 9D — `view` Tool Scope Limit (ZERO TOLERANCE)
+  16. Lines 552-557 (  6 lines): RULE 10 — USER-MANDATED COMMAND AUTHORITY
+  17. Lines 558-563 (  6 lines): RULE 11 — NO PLACEHOLDERS
+  18. Lines 564-569 (  6 lines): RULE 12 — DETERMINISTIC OUTPUT
+  19. Lines 570-575 (  6 lines): RULE 13 — SELF-AUDIT BEFORE EMISSION
+  20. Lines 576-581 (  6 lines): RULE 14 — REGRESSION CHALLENGE RESPONSE
+  21. Lines 582-597 ( 16 lines): RULE 15 — ZERO-HANG GUARANTEE
+  22. Lines 598-644 ( 47 lines): RULE 16 — COMPLETE WORKFLOW TESTING
+  23. Lines 645-650 (  6 lines): RULE 17 — VERSION CONTROL & PROVENANCE
+  24. Lines 651-656 (  6 lines): RULE 18 — FAIL-SAFE & ROLLBACK
+  25. Lines 657-662 (  6 lines): RULE 19 — SENSITIVE DATA HANDLING
+  26. Lines 663-668 (  6 lines): RULE 20 — ENVIRONMENT & DEPENDENCY DECLARATION
+  27. Lines 669-679 ( 11 lines): RULE 21 — DOCKER / CONTAINER WORKFLOW MANDATES 🟠
+  28. Lines 680-729 ( 50 lines): RULE 22 — TERMINAL HYGIENE & RESOURCE MANAGEMENT 🟠
+  29. Lines 730-741 ( 12 lines): MANDATORY COMPLIANCE AUDIT
+END: Parse all 741 rules from markdown into JSON

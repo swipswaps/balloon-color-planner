@@ -1,0 +1,25 @@
+START: Inspect actual JSON file structure
+{
+  "file": "mandatory-rules-v6.7.md",
+  "source": "/home/owner/.augment/rules/mandatory-rules-v6.7.md",
+  "content": "---\n# Mandatory Rules for AI Assistant Interactions\n\n**Version:** 6.7\n\n**v6.7 Changes over v6.6:**\n- SESSION BOOTSTRAP block added — runs before all other rules\n- Fixed second `max_wait_seconds=3` occurrence (was line 166 in v6.6)\n- `NEVER use tee` contradiction removed\n- `read-terminal` changed from EXCEPTION to MANDATORY when output empty/truncated\n- Watchdog scrip
+ources, file descriptors, and extension host memory\n- At scale (100+ terminals), this destabilizes the entire MCP tool pipeline\n- Recovery requires VS Code window reload or upgrade, wasting significant user time\n\n---\n\n## MANDATORY COMPLIANCE AUDIT\n\nEvery response must end with:\n\nCOMPLIANCE AUDIT:\n- Rules applied: 0-22\n- Evidence provided: YES / NO / N/A\n- Violations detected: YES / NO\n- Emission gate passed: YES / NO\n- Partial compliance: YES / NO\n- Task complete: YES / NO\n\n"
+}
+4 mandatory-rules-v6.7.json
+JSON keys: ['file', 'source', 'content']
+
+file: (string, 23 chars)
+First 100: mandatory-rules-v6.7.md
+
+source: (string, 50 chars)
+First 100: /home/owner/.augment/rules/mandatory-rules-v6.7.md
+
+content: (string, 31365 chars)
+First 100: ---
+# Mandatory Rules for AI Assistant Interactions
+
+**Version:** 6.7
+
+**v6.7 Changes over v6.6:**
+-
+END: Inspect actual JSON file structure
