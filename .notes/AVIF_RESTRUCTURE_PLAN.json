@@ -1,0 +1,183 @@
+{
+  "title": "RESTRUCTURE: Use AVIF Files Directly - No Path Changes Needed for Production",
+  "problem": "PNG conversion introduced blocky edges. AVIF files worked fine on public site. PNG maintenance is burden.",
+  "solution": "Create self-contained project folder structure using AVIF files. Paths will be identical in dev and production.",
+  "applicable_rules": [
+    "RULE_6: KNOWN_WORKING_CODE_ONLY - AVIF format proven working on production",
+    "RULE_2: NO_PARTIAL_COMPLIANCE - Complete restructure: organize → update paths → test → commit → push → verify",
+    "RULE_3: NO_SILENT_REGRESSION - Keep all 190 arrangements functional, no feature loss",
+    "RULE_7: EVIDENCE_BEFORE_ASSERTION - Test with curl before committing",
+    "RULE_16: COMPLETE_WORKFLOW_TESTING - Local test with AVIF files, verify smooth edges"
+  ],
+  "folder_structure": {
+    "current_broken_state": {
+      "path": "balloon-planner/",
+      "problem": "Paths reference balloon-thumbnails/ at root level. Different in dev vs production."
+    },
+    "new_self_contained_structure": {
+      "path": "balloon-planner/",
+      "subdirs": {
+        "assets/": "All image files (AVIF only, no PNGs)",
+        "assets/images/": "All 190 arrangement AVIF files",
+        "css/": "Stylesheets (unchanged)",
+        "js/": "JavaScript files (updated for new image paths)",
+        "index-photo.html": "Main HTML file (unchanged)"
+      },
+      "benefit": "Portable - copy entire balloon-planner/ folder to production, no path changes needed"
+    }
+  },
+  "steps": [
+    {
+      "step_number": 1,
+      "task_name": "CREATE folder structure",
+      "action": "Create balloon-planner/assets/images/ directory",
+      "input": "Current balloon-planner/ directory",
+      "output": "New directory: balloon-planner/assets/images/",
+      "applicable_rule": "RULE_6 - KNOWN_WORKING_CODE_ONLY",
+      "verbose_code_comment": "Create nested asset folder structure: balloon-planner/assets/images/. This will hold ALL 190 AVIF files. Keeping everything under balloon-planner/ ensures portability - when deployed to public site, the entire folder moves together with correct relative paths."
+    },
+    {
+      "step_number": 2,
+      "task_name": "COPY AVIF files to new location",
+      "action": "Copy all 190 AVIF files from balloon-thumbnails/ to balloon-planner/assets/images/",
+      "input": "balloon-thumbnails/*.avif (190 files)",
+      "output": "balloon-planner/assets/images/*.avif (190 files copied)",
+      "applicable_rule": "RULE_6 - KNOWN_WORKING_CODE_ONLY",
+      "verbose_code_comment": "Copy all AVIF files. These are proven working - they rendered smoothly on public site. AVIF format: (1) modern browser support (all current browsers), (2) no alpha fringing artifacts, (3) efficient file sizes, (4) scalable. Do NOT convert to PNG - that introduced the blocky edges problem."
+    },
+    {
+      "step_number": 3,
+      "task_name": "UPDATE gallery-data.js image paths",
+      "action": "Change all image URLs from balloon-thumbnails/ to ./assets/images/",
+      "input": "gallery-data.js with 190 image URLs pointing to balloon-thumbnails/",
+      "output": "gallery-data.js with 190 image URLs pointing to ./assets/images/",
+      "applicable_rule": "RULE_3 - NO_SILENT_REGRESSION",
+      "verbose_code_comment": "Update paths: OLD: '../balloon-thumbnails/png-transparent/filename.png' → NEW: './assets/images/filename.avif'. This is a find-replace operation. Path is relative to balloon-planner/js/gallery-data.js, so ./assets/images/ resolves correctly. No domain-specific paths - works in dev and production identically."
+    },
+    {
+      "step_number": 4,
+      "task_name": "REGENERATE gallery-data.js from source AVIF files",
+      "action": "Run generate-gallery-data.js script, but read from balloon-planner/assets/images/ instead of balloon-thumbnails/",
+      "input": "Updated script pointing to new AVIF folder",
+      "output": "gallery-data.js with correct relative paths to AVIF files",
+      "applicable_rule": "RULE_6 - KNOWN_WORKING_CODE_ONLY",
+      "verbose_code_comment": "Modify generate-gallery-data.js to: (1) read from balloon-planner/assets/images/*.avif, (2) output paths as './assets/images/filename.avif', (3) verify 190 AVIF files found, (4) verify 7 color families created. This ensures gallery-data.js is programmatically generated with correct paths."
+    },
+    {
+      "step_number": 5,
+      "task_name": "VERIFY folder structure and paths",
+      "action": "Use curl to check: (1) HTML loads, (2) CSS loads, (3) gallery-data.js loads, (4) paths in gallery-data.js are correct, (5) AVIF files accessible",
+      "input": "Running server + reorganized files",
+      "output": "Curl verification showing all resources HTTP 200, paths correct, AVIF files found",
+      "applicable_rule": "RULE_7 - EVIDENCE_BEFORE_ASSERTION",
+      "verbose_code_comment": "Verification steps: (1) curl http://localhost:8888/balloon-planner/index-photo.html → HTTP 200, (2) grep gallery-data.js for './assets/images/' → all 190 paths use new location, (3) curl to verify AVIF files accessible at new paths, (4) check no 404 errors in server logs."
+    },
+    {
+      "step_number": 6,
+      "task_name": "VISUAL TEST: Verify smooth AVIF edges in browser",
+      "action": "Open page in browser, look at color swatches - should be smooth with NO blocky edges",
+      "input": "http://localhost:8888/balloon-planner/index-photo.html with new folder structure",
+      "output": "Visual confirmation: swatches are smooth, clear, professional appearance (AVIF edges are clean)",
+      "applicable_rule": "RULE_16 - COMPLETE_WORKFLOW_TESTING",
+      "verbose_code_comment": "Expected result: (1) Color swatch thumbnails display smoothly, (2) No blocky edges visible (AVIF format has no alpha fringing artifacts), (3) Images are sharp and professional, (4) Gallery filters work (click color → gallery updates), (5) No console errors in F12 DevTools."
+    },
+    {
+      "step_number": 7,
+      "task_name": "VERIFY all functionality preserved",
+      "action": "Test complete app: 190 arrangements load, color filtering works, reset button works, responsive layout works, no console errors",
+      "input": "Updated app with new folder structure",
+      "output": "Confirmation: all functionality works, no regression",
+      "applicable_rule": "RULE_3 - NO_SILENT_REGRESSION",
+      "verbose_code_comment": "Test suite: (1) Page loads without errors, (2) All 7 color families visible as swatches, (3) Click each color → gallery filters to that color's arrangements, (4) Click Reset → gallery shows all 190 again, (5) Click arrangement thumbnail → main image updates, (6) Click main image → lightbox opens, (7) Responsive on mobile (browser resize to 375px width)."
+    },
+    {
+      "step_number": 8,
+      "task_name": "CLEANUP: Remove old PNG-related files",
+      "action": "Delete: png-transparent/ folder (if exists), generate-gallery-data.js (if PNG-specific), fix-avif-edges.sh (no longer needed)",
+      "input": "Old files from PNG conversion attempt",
+      "output": "Project cleaned up, only AVIF files remain",
+      "applicable_rule": "RULE_3 - NO_SILENT_REGRESSION",
+      "verbose_code_comment": "Cleanup ensures: (1) No confusion between PNG and AVIF versions, (2) No accidental use of old paths, (3) Cleaner git history, (4) Smaller final package size. Keep only: AVIF files in assets/images/, updated gallery-data.js, original scripts."
+    },
+    {
+      "step_number": 9,
+      "task_name": "GIT COMMIT restructure and AVIF migration",
+      "action": "Stage all changes: new folder structure, updated gallery-data.js, deleted PNG files",
+      "input": "Reorganized project with AVIF files",
+      "output": "Git commit with message describing migration",
+      "applicable_rule": "RULE_2 - NO_PARTIAL_COMPLIANCE (workflow step 5 of 7)",
+      "verbose_code_comment": "Commit message: 'refactor: Restructure to use AVIF files directly - eliminate PNG conversion artifacts. Move all images to self-contained assets/images/ folder. Update gallery-data.js paths for portability. Dev and production paths now identical. All 190 arrangements use AVIF format for smooth, professional edges.'"
+    },
+    {
+      "step_number": 10,
+      "task_name": "GIT PUSH to GitHub",
+      "action": "git push origin main (or default branch)",
+      "input": "Local git commits",
+      "output": "Changes pushed to remote",
+      "applicable_rule": "RULE_2 - NO_PARTIAL_COMPLIANCE (workflow step 6 of 7)",
+      "verbose_code_comment": "Push restructured code to GitHub. If auto-deploy configured, production will receive: (1) all 190 AVIF files in assets/images/, (2) updated gallery-data.js with correct relative paths, (3) cleaned up project structure. No path changes needed - dev and production are identical."
+    },
+    {
+      "step_number": 11,
+      "task_name": "VERIFY production: Test on deployed site",
+      "action": "Access deployed balloon planner, verify smooth AVIF edges, all 190 arrangements visible, filtering works",
+      "input": "Deployed application URL",
+      "output": "Confirmation: production app working with smooth edges, no artifacts",
+      "applicable_rule": "RULE_2 - NO_PARTIAL_COMPLIANCE (workflow step 7 of 7)",
+      "verbose_code_comment": "Production verification: (1) AVIF files load from production assets/images/ folder, (2) Swatch thumbnails display smoothly (AVIF format, no artifacts), (3) Gallery functions correctly (190 arrangements, 7 color families), (4) Responsive on mobile, (5) No console errors. Success = smooth edges return, proven format, portable structure."
+    }
+  ],
+  "benefits_of_this_approach": {
+    "technical": [
+      "AVIF format proven working on production",
+      "No conversion artifacts (PNG conversion caused blocky edges)",
+      "Self-contained folder structure - copy entire balloon-planner/ to any server",
+      "Relative paths work identically in dev and production",
+      "No maintenance burden - no complex scripts needed"
+    ],
+    "operational": [
+      "One image format (AVIF) - simpler to manage",
+      "All 190 files in one folder structure",
+      "No PNG → AVIF conversion needed",
+      "Deployment is simple folder copy",
+      "No path configuration changes needed"
+    ],
+    "scalability": [
+      "If adding more arrangements - just add AVIF files to assets/images/",
+      "If moving to new server - entire balloon-planner/ folder is portable",
+      "If updating images - regenerate AVIF from sources, same folder structure"
+    ]
+  },
+  "success_criteria": {
+    "must_have": [
+      "All 190 AVIF files copied to balloon-planner/assets/images/",
+      "gallery-data.js paths updated to ./assets/images/filename.avif",
+      "Page loads without 404 errors (all AVIF files accessible)",
+      "Swatch thumbnails display smoothly (no blocky edges)",
+      "Color filtering works (all 7 families functional)",
+      "Reset button returns to viewing all 190 arrangements",
+      "Responsive layout works (mobile + desktop)",
+      "No console errors in browser DevTools",
+      "Local test passes with curl verification",
+      "Production deployment succeeds"
+    ]
+  },
+  "file_operations_summary": {
+    "create": [
+      "balloon-planner/assets/",
+      "balloon-planner/assets/images/"
+    ],
+    "copy": [
+      "balloon-thumbnails/*.avif → balloon-planner/assets/images/"
+    ],
+    "modify": [
+      "balloon-planner/js/gallery-data.js (update paths)",
+      "generate-gallery-data.js (if regenerating)"
+    ],
+    "delete": [
+      "balloon-thumbnails/png-transparent/ (if exists)",
+      "fix-avif-edges.sh (PNG conversion script)",
+      "Old PNG files (if generated)"
+    ]
+  }
+}
