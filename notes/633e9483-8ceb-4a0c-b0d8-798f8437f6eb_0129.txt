@@ -1,0 +1,781 @@
+Augment.vscode-augment/augment-user-assets/checkpoint-documents/1fb88a20-345b-4b1b-9bf7-1e116bdd4598/document-_home_owner_Documents_augmentrecover_.augment_rules_mandatory-rules-v6.7.md-1774004340019-d3d24762-2904-49ae-9684-fe64ab062bf3.json
+/home/owner/Documents/augmentrecover/.augment/rules/mandatory-rules-v6.7.md
+[owner@192.168.1.135-20260417-193026 Optimizer_OS-v.29-Advanced-Fedora-Forensic-Tuning-Suite]$ gh auth login
+? Where do you use GitHub? GitHub.com
+? What is your preferred protocol for Git operations on this host? HTTPS
+? How would you like to authenticate GitHub CLI? Login with a web browser
+
+! First copy your one-time code: 9103-234A
+Press Enter to open https://github.com/login/device in your browser... 
+
+✓ Authentication complete.
+- gh config set -h github.com git_protocol https
+✓ Configured git protocol
+✓ Logged in as swipswaps
+! You were already logged in to this account
+[owner@192.168.1.135-20260417-193916 Optimizer_OS-v.29-Advanced-Fedora-Forensic-Tuning-Suite]$ 
+[owner@192.168.1.135-20260417-193916 Optimizer_OS-v.29-Advanced-Fedora-Forensic-Tuning-Suite]$ 
+[owner@192.168.1.135-20260417-193916 Optimizer_OS-v.29-Advanced-Fedora-Forensic-Tuning-Suite]$ # 1. Add runtime artifacts to .gitignore so they don't get committed
+cat >> .gitignore <<'EOF'
+__pycache__/
+*.pyc
+simulated_kernel_state.json
+.notes/
+.augment/
+EOF
+
+# 2. Stage only the real code changes (and the updated .gitignore + lockfile)
+git add .gitignore \
+        src/App.tsx \
+        server.ts \
+        io_causality_probe_v29.py \
+        vite.config.ts \
+        package-lock.json \
+        dev.sh self-heal.sh optimize_fedora.sh
+
+# 3. Review what will be committed
+git status --short
+git diff --cached --stat
+
+# 4. Commit with a descriptive message
+git commit -m "fix: correct lint issues across probe, server, UI, and config
+
+- src/App.tsx: fix \\b backspace escape in kernel stack string (was
+  corrupting rendered stack trace for kworker/u8:2 forensic entry)
+- server.ts: fix 'Pruring' typo in log-purge message
+- io_causality_probe_v29.py: fix 'iowit' comment typo; remove unused
+  'global graph' declaration (pyflakes F824)
+- vite.config.ts: repair UTF-8 mojibake in HMR comment
+- .gitignore: exclude __pycache__, runtime kernel state, local notes"
+
+# 5. Push to the tracked upstream
+git push origin main
+M  .gitignore
+M  dev.sh
+M  io_causality_probe_v29.py
+M  optimize_fedora.sh
+M  package-lock.json
+M  self-heal.sh
+M  server.ts
+M  src/App.tsx
+M  vite.config.ts
+ .gitignore                |  5 +++++
+ dev.sh                    |  0
+ io_causality_probe_v29.py |  3 +--
+ optimize_fedora.sh        |  0
+ package-lock.json         | 13 ++++++++++++-
+ self-heal.sh              |  0
+ server.ts                 |  2 +-
+ src/App.tsx               |  2 +-
+ vite.config.ts            |  2 +-
+ 9 files changed, 21 insertions(+), 6 deletions(-)
+[main fd11f68] fix: correct lint issues across probe, server, UI, and config
+ 9 files changed, 21 insertions(+), 6 deletions(-)
+ mode change 100644 => 100755 dev.sh
+ mode change 100644 => 100755 io_causality_probe_v29.py
+ mode change 100644 => 100755 optimize_fedora.sh
+ mode change 100644 => 100755 self-heal.sh
+Enumerating objects: 17, done.
+Counting objects: 100% (17/17), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (9/9), done.
+Writing objects: 100% (9/9), 1.34 KiB | 1.34 MiB/s, done.
+Total 9 (delta 6), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (6/6), completed with 6 local objects.
+To https://github.com/swipswaps/-Optimizer_OS-v.29-Advanced-Fedora-Forensic-Tuning-Suite-.git
+   540bb0a..fd11f68  main -> main
+[owner@192.168.1.135-20260417-194010 Optimizer_OS-v.29-Advanced-Fedora-Forensic-Tuning-Suite]$ locate mandatory-rules-v6.7.md
+/home/owner/.config/Code/User/workspaceStorage/12248709acd2143f3205789043d56dd2/Augment.vscode-augment/augment-user-assets/checkpoint-documents/1fb88a20-345b-4b1b-9bf7-1e116bdd4598/document-_home_owner_Documents_augmentrecover_.augment_rules_mandatory-rules-v6.7.md-0-77e3a14b-a1f3-4cb0-b948-66584e92a6ce.json
+/home/owner/.config/Code/User/workspaceStorage/12248709acd2143f3205789043d56dd2/Augment.vscode-augment/augment-user-assets/checkpoint-documents/1fb88a20-345b-4b1b-9bf7-1e116bdd4598/document-_home_owner_Documents_augmentrecover_.augment_rules_mandatory-rules-v6.7.md-1773951627693-0ba62343-9146-4933-bbf2-1fe94649a091.json
+/home/owner/.config/Code/User/workspaceStorage/12248709acd2143f3205789043d56dd2/Augment.vscode-augment/augment-user-assets/checkpoint-documents/1fb88a20-345b-4b1b-9bf7-1e116bdd4598/document-_home_owner_Documents_augmentrecover_.augment_rules_mandatory-rules-v6.7.md-1773951627733-ffc2d968-bebe-4761-9983-82f884afe67f.json
+/home/owner/.config/Code/User/workspaceStorage/12248709acd2143f3205789043d56dd2/Augment.vscode-augment/augment-user-assets/checkpoint-documents/1fb88a20-345b-4b1b-9bf7-1e116bdd4598/document-_home_owner_Documents_augmentrecover_.augment_rules_mandatory-rules-v6.7.md-1773951653892-555ff95a-ba82-458c-8e2e-69728be4b613.json
+/home/owner/.config/Code/User/workspaceStorage/12248709acd2143f3205789043d56dd2/Augment.vscode-augment/augment-user-assets/checkpoint-documents/1fb88a20-345b-4b1b-9bf7-1e116bdd4598/document-_home_owner_Documents_augmentrecover_.augment_rules_mandatory-rules-v6.7.md-1773951653908-7a8d8ce2-5779-4918-baf6-11565b64b31d.json
+/home/owner/.config/Code/User/workspaceStorage/12248709acd2143f3205789043d56dd2/Augment.vscode-augment/augment-user-assets/checkpoint-documents/1fb88a20-345b-4b1b-9bf7-1e116bdd4598/document-_home_owner_Documents_augmentrecover_.augment_rules_mandatory-rules-v6.7.md-1773953163475-ff09bf8a-27bd-4ebb-8dbd-f097ec773f14.json
+/home/owner/.config/Code/User/workspaceStorage/12248709acd2143f3205789043d56dd2/Augment.vscode-augment/augment-user-assets/checkpoint-documents/1fb88a20-345b-4b1b-9bf7-1e116bdd4598/document-_home_owner_Documents_augmentrecover_.augment_rules_mandatory-rules-v6.7.md-1773953163510-523d04b1-c0c7-4952-95e5-7a8896d29047.json
+/home/owner/.config/Code/User/workspaceStorage/12248709acd2143f3205789043d56dd2/Augment.vscode-augment/augment-user-assets/checkpoint-documents/1fb88a20-345b-4b1b-9bf7-1e116bdd4598/document-_home_owner_Documents_augmentrecover_.augment_rules_mandatory-rules-v6.7.md-1773956636868-f9843f22-c644-400d-bd57-9992c52eaea1.json
+/home/owner/.config/Code/User/workspaceStorage/12248709acd2143f3205789043d56dd2/Augment.vscode-augment/augment-user-assets/checkpoint-documents/1fb88a20-345b-4b1b-9bf7-1e116bdd4598/document-_home_owner_Documents_augmentrecover_.augment_rules_mandatory-rules-v6.7.md-1773956636925-fb49e799-80f0-4e96-8af6-a5c9e75027e9.json
+/home/owner/.config/Code/User/workspaceStorage/12248709acd2143f3205789043d56dd2/Augment.vscode-augment/augment-user-assets/checkpoint-documents/1fb88a20-345b-4b1b-9bf7-1e116bdd4598/document-_home_owner_Documents_augmentrecover_.augment_rules_mandatory-rules-v6.7.md-1773956885819-ff0b1fd3-170f-4e2b-905f-bab423f032ec.json
+/home/owner/.config/Code/User/workspaceStorage/12248709acd2143f3205789043d56dd2/Augment.vscode-augment/augment-user-assets/checkpoint-documents/1fb88a20-345b-4b1b-9bf7-1e116bdd4598/document-_home_owner_Documents_augmentrecover_.augment_rules_mandatory-rules-v6.7.md-1773956885879-426d8fec-3744-4eb0-b42a-1dd04fc5b6c0.json
+/home/owner/.config/Code/User/workspaceStorage/12248709acd2143f3205789043d56dd2/Augment.vscode-augment/augment-user-assets/checkpoint-documents/1fb88a20-345b-4b1b-9bf7-1e116bdd4598/document-_home_owner_Documents_augmentrecover_.augment_rules_mandatory-rules-v6.7.md-1774004329261-479d51b1-7a9b-40ce-b706-21982f909630.json
+/home/owner/.config/Code/User/workspaceStorage/12248709acd2143f3205789043d56dd2/Augment.vscode-augment/augment-user-assets/checkpoint-documents/1fb88a20-345b-4b1b-9bf7-1e116bdd4598/document-_home_owner_Documents_augmentrecover_.augment_rules_mandatory-rules-v6.7.md-1774004329338-c92ccec7-d54e-4b01-8e3b-f0f2227aa7c6.json
+/home/owner/.config/Code/User/workspaceStorage/12248709acd2143f3205789043d56dd2/Augment.vscode-augment/augment-user-assets/checkpoint-documents/1fb88a20-345b-4b1b-9bf7-1e116bdd4598/document-_home_owner_Documents_augmentrecover_.augment_rules_mandatory-rules-v6.7.md-1774004339998-0757fd48-27bb-404c-afcd-9d093f809bf8.json
+/home/owner/.config/Code/User/workspaceStorage/12248709acd2143f3205789043d56dd2/Augment.vscode-augment/augment-user-assets/checkpoint-documents/1fb88a20-345b-4b1b-9bf7-1e116bdd4598/document-_home_owner_Documents_augmentrecover_.augment_rules_mandatory-rules-v6.7.md-1774004340019-d3d24762-2904-49ae-9684-fe64ab062bf3.json
+/home/owner/Documents/augmentrecover/.augment/rules/mandatory-rules-v6.7.md
+[owner@192.168.1.135-20260417-202750 Optimizer_OS-v.29-Advanced-Fedora-Forensic-Tuning-Suite]$ 
+[owner@192.168.1.135-20260417-202750 Optimizer_OS-v.29-Advanced-Fedora-Forensic-Tuning-Suite]$ cd /home/owner/Documents/Optimizer_OS-v.29-Advanced-Fedora-Forensic-Tuning-Suite
+
+# 0. Refresh gh auth (token in keyring was invalid last check)
+gh auth status || gh auth login -h github.com
+
+# 1. Review pending changes
+git status --short
+git diff --stat
+
+# 2. Stage runtime-safety + security fixes
+git add package.json server.ts io_causality_probe_v29.py
+
+# 3. Commit
+git commit -m "fix(runtime,security): make npm start work, harden API, trap SIGTERM
+
+package.json:
+  - start script no longer points at non-existent dist/server.cjs;
+    runs tsx server.ts under NODE_ENV=production to match dev.sh.
+
+server.ts:
+  - bind listener to 127.0.0.1 by default (was 0.0.0.0, LAN-reachable);
+    override with BIND_HOST env.
+  - add regex allowlist for /api/tuner/apply and the automation watchdog
+    so exec() cannot run arbitrary client-supplied strings.
+  - validate profile name (/api/tuner/profiles POST) and event id
+    (/api/probe-logs/:id GET) with containment check to block path
+    traversal on write and read.
+  - introduce shuttingDown flag; probe 'close' handler no longer
+    schedules a restart during cleanup, eliminating orphaned python3
+    processes on graceful shutdown.
+
+io_causality_probe_v29.py:
+  - register SIGTERM alongside SIGINT so the server-sent SIGTERM
+    triggers handle_exit instead of abrupt kill.
+  - retain worker thread handle and join(timeout=5) before log
+    'Probe exited cleanly' so snapshot_queue drains on shutdown."
+
+# 4. Push
+git push origin main
+github.com
+  ✓ Logged in to github.com account swipswaps (keyring)
+  - Active account: true
+  - Git operations protocol: https
+  - Token: gho_************************************
+  - Token scopes: 'gist', 'read:org', 'repo', 'workflow'
+ M io_causality_probe_v29.py
+ M package.json
+ M server.ts
+ io_causality_probe_v29.py |  6 +++-
+ package.json              |  2 +-
+ server.ts                 | 91 +++++++++++++++++++++++++++++++++++++----------
+ 3 files changed, 78 insertions(+), 21 deletions(-)
+[main 21857f6] fix(runtime,security): make npm start work, harden API, trap SIGTERM
+ 3 files changed, 78 insertions(+), 21 deletions(-)
+Enumerating objects: 9, done.
+Counting objects: 100% (9/9), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (5/5), 2.61 KiB | 2.61 MiB/s, done.
+Total 5 (delta 4), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (4/4), completed with 4 local objects.
+To https://github.com/swipswaps/-Optimizer_OS-v.29-Advanced-Fedora-Forensic-Tuning-Suite-.git
+   fd11f68..21857f6  main -> main
+[owner@192.168.1.135-20260417-202851 Optimizer_OS-v.29-Advanced-Fedora-Forensic-Tuning-Suite]$ # 4. Push
+[owner@192.168.1.135-20260417-202851 Optimizer_OS-v.29-Advanced-Fedora-Forensic-Tuning-Suite]$ # 3. Commit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[owner@192.168.1.135-20260417-202851 Optimizer_OS-v.29-Advanced-Fedora-Forensic-Tuning-Suite]$ cd .augment/rules/
+[owner@192.168.1.135-20260417-213846 rules]$ ls -lat
+total 32
+drwxr-xr-x. 1 owner owner    58 Apr 17 21:17 ..
+drwxr-xr-x. 1 owner owner    46 Apr 17 20:51 .
+-rw-r--r--. 1 owner owner 31734 Apr 17 20:51 mandatory-rules-v6.7.md
+[owner@192.168.1.135-20260417-213850 rules]$ nano mandatory-rules-v6.7.md ^C
+[owner@192.168.1.135-20260419-140343 rules]$ cd ../
+[owner@192.168.1.135-20260419-140351 .augment]$ cd ../
+[owner@192.168.1.135-20260419-140352 Optimizer_OS-v.29-Advanced-Fedora-Forensic-Tuning-Suite]$ cd ../
+[owner@192.168.1.135-20260419-140354 Documents]$ ls -lat
+total 244
+drwx------. 1 owner owner   2516 Apr 19 14:03 ..
+drwxr-xr-x. 1 owner owner    632 Apr 17 22:31 Optimizer_OS-v.29-Advanced-Fedora-Forensic-Tuning-Suite
+drwxr-xr-x. 1 owner owner   1944 Apr 17 15:01 69e0de8e-a950-832c-9b15-bb672d848801
+drwxr-xr-x. 1 owner owner   3094 Apr 17 15:01 .
+drwxr-xr-x. 1 owner owner    600 Apr 15 11:15 augmentrecover
+drwxr-xr-x. 1 owner owner   8494 Mar 14 19:00 6984bd27-4494-8330-9803-7b6895a48aa5
+drwxr-xr-x. 1 owner owner     84 Mar  6 14:28 69aafb6c-8adc-8328-b5e8-4362246077b6
+drwxr-xr-x. 1 owner owner   2438 Mar  6 10:24 receipts-ocr
+drwxr-xr-x. 1 owner owner    312 Mar  5 14:47 kairos
+-rw-r--r--. 1 owner owner 244751 Feb 14 17:35 2022342363176120775_0001.txt
+drwxr-xr-x. 1 owner owner      0 Feb 14 17:34 2022342363176120775
+drwxr-xr-x. 1 owner owner     12 Feb  5 10:23 6983eab0-9244-8332-8dc0-10329b2bbfa0
+drwxr-xr-x. 1 owner owner   2536 Feb  2 19:33 johnkimball
+drwxr-xr-x. 1 owner owner   4318 Feb  2 09:34 696d62a9-9c68-832a-b5af-a90eb5243316
+drwxr-xr-x. 1 owner owner   1124 Jan 27 16:40 697916af-724c-8325-a00b-ce256e214c48
+drwxr-xr-x. 1 owner owner      0 Jan 14 14:29 opencode
+drwxr-xr-x. 1 owner owner    202 Jan  9 17:14 69612439-14cc-8326-ae46-455c0df3b9be
+drwxr-xr-x. 1 owner owner   2306 Jan  9 08:06 augment-test
+drwxr-xr-x. 1 owner owner   2254 Jan  8 14:13 augment-test_bak
+drwxr-xr-x. 1 owner owner     10 Dec 28 15:23 6951724c-000c-8332-90a1-e706777027de
+drwxr-xr-x. 1 owner owner    170 Dec 22 18:18 694533e8-ac54-8329-bbf9-22069a0d424e
+drwxr-xr-x. 1 owner owner    150 Dec 17 08:55 6942a72d-920c-832f-b0d8-1d645a3b848c
+drwxr-xr-x. 1 owner owner    446 Dec 15 20:26 Marketplace-Bulk-Master
+drwxr-xr-x. 1 owner owner    720 Dec 15 07:46 ebay-api-lister
+drwxr-xr-x. 1 owner owner     90 Dec 15 05:14 693f07a6-7c74-8327-862e-29a83ade46f3
+drwxr-xr-x. 1 owner owner    256 Dec 14 12:44 693ed5b2-bb94-8330-9aa9-f92d2dbda6bf
+drwxr-xr-x. 1 owner owner   5598 Dec 13 16:01 Archive-Omnidash-2
+drwxr-xr-x. 1 owner owner    842 Dec 12 13:49 Archive-OmniDash
+drwxr-xr-x. 1 owner owner   2238 Dec 12 10:02 paddle-ocr
+drwxr-xr-x. 1 owner owner     80 Dec 11 09:47 repo-puller
+drwxr-xr-x. 1 owner owner   2128 Dec 11 09:43 paddle-ocr_backup_20251211_094753
+drwxr-xr-x. 1 owner owner    904 Dec 11 07:38 Docker-OCR-2
+drwxr-xr-x. 1 owner owner      0 Dec  9 07:39 10jOITkIzFhc5viHhHU9nc93Nw96iu8QN
+drwxr-xr-x. 1 owner owner   3148 Dec  4 18:05 DockerOCR
+drwxr-xr-x. 1 owner owner    160 Dec  3 09:51 quality-gates
+drwxr-xr-x. 1 owner owner    506 Dec  2 16:25 llm_notes
+drwxr-xr-x. 1 owner owner    386 Nov 29 18:03 DockerOCR-Clone
+drwxr-xr-x. 1 owner owner    432 Nov 26 15:38 sunelec
+drwxr-xr-x. 1 owner owner   1406 Nov 14 09:08 Blog-Scraper-AI
+-rw-r--r--. 1 owner owner    842 Nov 11 12:51 pho
+drwxr-xr-x. 1 owner owner   2590 Nov  1 08:23 1NHvzcizbuBd600sivuBLtbOiYqUSgFPI
+drwxr-xr-x. 1 owner owner     50 Oct 24 15:22 keys
+drwxr-xr-x. 1 owner owner     72 Oct 24 13:40 68ec058d-be68-832e-9fcf-75a034766e14
+drwxr-xr-x. 1 owner owner      0 Oct 24 13:26 augment
+drwxr-xr-x. 1 owner owner     18 Oct 24 09:19 1kaEkAcOCvWL7U2qj24MoIgltGE0vKUG2
+drwxr-xr-x. 1 owner owner     98 Oct  3  2025 AIzaSyDbirYaPSdqn32k_Ejvr9xM3RGYuydiXQU
+drwxr-xr-x. 1 owner owner    264 Oct  2  2025 12gwCef57LzSnrTPVp-nvzFljf87yBuCX
+drwxr-xr-x. 1 owner owner      0 Sep 25  2025 68d5405d-e864-8320-ab21-24045f58c014
+drwxr-xr-x. 1 owner owner    940 Sep  9  2025 11jCGEGBvO1kUgS4ZunQjvgbnxiz3n-_4
+drwxr-xr-x. 1 owner owner     34 Sep  6  2025 fix_cursor
+drwxr-xr-x. 1 owner owner    340 Aug 28  2025 68aefe42-fa08-832f-8819-b1ed57315634
+drwxr-xr-x. 1 owner owner    812 Aug 26  2025 1PSBvJY1fau3mN9oa1tr3fyQNUqZG6M3q
+drwxr-xr-x. 1 owner owner    556 Aug 25  2025 1Zq853FA4KkmvLkwsSnk6CC29-XqWZ96A
+drwxr-xr-x. 1 owner owner    358 Aug 22  2025 68a82981-ed88-8325-a14a-c96c267480c7
+drwxr-xr-x. 1 owner owner      0 Aug 22  2025 68a82981-ed88-8325-a14a-c96c267480c7_notes
+drwxr-xr-x. 1 owner owner    392 Aug 21  2025 skydiveU_2025_08_21
+drwxr-xr-x. 1 owner owner     42 Aug 21  2025 skydiveuniversity.com_latest
+drwxr-xr-x. 1 owner owner    120 Aug 21  2025 68a6fca5-32d4-8320-bcc1-660408569557
+drwxr-xr-x. 1 owner owner  14968 Aug 20  2025 689cbcfe-ca1c-8331-8108-6513e9353cfe
+drwxr-xr-x. 1 owner owner    120 Aug 20  2025 68a58352-739c-8332-a994-fdd8de8488d8
+drwxr-xr-x. 1 owner owner    338 Aug 15  2025 skydiveuniversity.com
+drwxr-xr-x. 1 owner owner    730 Aug 15  2025 689cd0d5-4340-8322-a5ab-58db6ee54974
+drwxr-xr-x. 1 owner owner    578 Aug 13  2025 689cc405-0a54-8329-bd88-62fa5c7f3fb0
+[owner@192.168.1.135-20260419-140357 Documents]$ cd 69e0de8e-a950-832c-9b15-bb672d848801/
+[owner@192.168.1.135-20260419-140405 69e0de8e-a950-832c-9b15-bb672d848801]$ ls -lat
+total 260
+drwxr-xr-x. 1 owner owner   270 Apr 17 15:01 io_probe_logs_v29
+drwxr-xr-x. 1 owner owner  1944 Apr 17 15:01 .
+drwxr-xr-x. 1 owner owner   398 Apr 17 15:01 io_probe_logs_v26
+drwxr-xr-x. 1 owner owner   420 Apr 17 15:01 io_probe_logs_v25
+drwxr-xr-x. 1 owner owner   308 Apr 17 15:01 io_probe_logs_v24
+drwxr-xr-x. 1 owner owner   952 Apr 17 15:01 io_probe_logs_v21
+drwxr-xr-x. 1 owner owner   504 Apr 17 15:01 io_probe_logs_v20
+-rw-r--r--. 1 owner owner 10151 Apr 17 15:01 detect_recording_issues.sh
+drwxr-xr-x. 1 owner owner   168 Apr 17 15:01 io_probe_logs_v19
+drwxr-xr-x. 1 owner owner   300 Apr 17 15:01 notes
+-rw-r--r--. 1 owner owner   675 Apr 17 15:01 io_guard.sh
+-rw-r--r--. 1 owner owner  2056 Apr 17 15:01 io_guard_0002.sh
+-rw-r--r--. 1 owner owner  2450 Apr 17 15:01 io_guard_0003.sh
+-rw-r--r--. 1 owner owner  2435 Apr 17 15:01 io_forensics.sh
+-rw-r--r--. 1 owner owner  4445 Apr 17 15:01 io_causality_probe.py
+-rw-r--r--. 1 owner owner  4517 Apr 17 15:01 io_causality_probe_0002.py
+-rw-r--r--. 1 owner owner  5904 Apr 17 15:01 io_causality_probe_0004.py
+-rw-r--r--. 1 owner owner  9710 Apr 17 15:01 io_causality_probe_0005.py
+-rw-r--r--. 1 owner owner  6604 Apr 17 15:01 io_causality_probe_0006.py
+-rw-r--r--. 1 owner owner  4665 Apr 17 15:01 io_causality_probe_0007.py
+-rw-r--r--. 1 owner owner  4746 Apr 17 15:01 io_causality_probe_0008.py
+-rw-r--r--. 1 owner owner  6548 Apr 17 15:01 io_causality_probe_0009.py
+drwxr-xr-x. 1 owner owner     0 Apr 17 15:01 io_probe_logs_v23
+-rw-r--r--. 1 owner owner  8189 Apr 17 15:01 io_causality_probe_0010.py
+drwxr-xr-x. 1 owner owner     0 Apr 17 15:01 io_probe_logs_v22
+-rw-r--r--. 1 owner owner  6684 Apr 17 15:01 io_causality_probe_0011.py
+-rw-r--r--. 1 owner owner  8644 Apr 17 15:01 io_causality_probe_0012.py
+-rw-r--r--. 1 owner owner  9329 Apr 17 15:01 io_causality_probe_0013.py
+-rw-r--r--. 1 owner owner  9003 Apr 17 15:01 io_causality_probe_0014.py
+-rw-r--r--. 1 owner owner  8725 Apr 17 15:01 io_causality_probe_0015.py
+-rw-r--r--. 1 owner owner  7982 Apr 17 15:01 io_causality_probe_0016.py
+-rw-r--r--. 1 owner owner  6552 Apr 17 15:01 io_causality_probe_0017.py
+-rw-r--r--. 1 owner owner  3678 Apr 17 15:01 io_causality_probe_0019.py
+-rw-r--r--. 1 owner owner  5736 Apr 17 15:01 io_causality_probe_0020.py
+-rw-r--r--. 1 owner owner  3535 Apr 17 15:01 io_causality_probe_0021.py
+-rw-r--r--. 1 owner owner  4349 Apr 17 15:01 io_causality_probe_0022.py
+-rw-r--r--. 1 owner owner  7466 Apr 17 15:01 io_causality_probe_0023.py
+-rw-r--r--. 1 owner owner  6764 Apr 17 15:01 io_causality_probe_0024.py
+-rw-r--r--. 1 owner owner  6232 Apr 17 15:01 io_causality_probe_0025.py
+-rw-r--r--. 1 owner owner  6752 Apr 17 15:01 io_causality_probe_0026.py
+-rw-r--r--. 1 owner owner  6752 Apr 17 15:01 io_causality_probe_0027.py
+drwxr-xr-x. 1 owner owner     0 Apr 17 15:01 io_probe_logs_v17
+-rw-r--r--. 1 owner owner  6430 Apr 17 15:01 io_causality_probe_0028.py
+drwxr-xr-x. 1 owner owner     0 Apr 17 15:01 io_probe_logs_v16
+-rw-r--r--. 1 owner owner  8914 Apr 17 15:01 io_causality_probe_v29.py
+drwxr-xr-x. 1 owner owner  3094 Apr 17 15:01 ..
+[owner@192.168.1.135-20260419-140407 69e0de8e-a950-832c-9b15-bb672d848801]$ cd ../633e9483-8ceb-4a0c-b0d8-798f8437f6eb/
+[owner@192.168.1.135-20260419-141359 633e9483-8ceb-4a0c-b0d8-798f8437f6eb]$ ls -la
+total 72
+drwxr-xr-x. 1 owner owner   128 Apr 19 14:11 .
+drwxr-xr-x. 1 owner owner  3238 Apr 19 14:09 ..
+-rw-r--r--. 1 owner owner 44478 Apr 19 14:11 balloon_color_picker.html
+drwxr-xr-x. 1 owner owner    70 Apr 19 14:11 balloon-planner
+-rw-r--r--. 1 owner owner 25368 Apr 19 14:11 balloon-planner.zip
+drwxr-xr-x. 1 owner owner  2416 Apr 19 14:11 notes
+[owner@192.168.1.135-20260419-141401 633e9483-8ceb-4a0c-b0d8-798f8437f6eb]$ cd balloon-planner/
+[owner@192.168.1.135-20260419-141406 balloon-planner]$ ls -lat
+total 12
+drwxr-xr-x. 1 owner owner  128 Apr 19 14:12 .git
+drwxr-xr-x. 1 owner owner  118 Apr 19 14:11 js
+drwxr-xr-x. 1 owner owner   70 Apr 19 14:11 .
+drwxr-xr-x. 1 owner owner   18 Apr 19 14:11 css
+-rw-r--r--. 1 owner owner 5528 Apr 19 14:11 README.md
+drwxr-xr-x. 1 owner owner   18 Apr 19 14:11 .github
+-rw-r--r--. 1 owner owner 2593 Apr 19 14:11 index.html
+drwxr-xr-x. 1 owner owner  128 Apr 19 14:11 ..
+[owner@192.168.1.135-20260419-141411 balloon-planner]$ gh auth login
+? Where do you use GitHub? GitHub.com
+? What is your preferred protocol for Git operations on this host? HTTPS
+? How would you like to authenticate GitHub CLI? Login with a web browser
+
+! First copy your one-time code: 701E-BB84
+Press Enter to open https://github.com/login/device in your browser... 
+✓ Authentication complete.
+- gh config set -h github.com git_protocol https
+✓ Configured git protocol
+✓ Logged in as swipswaps
+! You were already logged in to this account
+[owner@192.168.1.135-20260419-141511 balloon-planner]$ ls -a
+.  ..  css  .git  .github  index.html  js  README.md
+[owner@192.168.1.135-20260419-141918 balloon-planner]$ git remote -v
+origin	https://github.com/swipswaps/balloon-color-planner.git (fetch)
+origin	https://github.com/swipswaps/balloon-color-planner.git (push)
+[owner@192.168.1.135-20260419-141936 balloon-planner]$ git pull origin main
+From https://github.com/swipswaps/balloon-color-planner
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+[owner@192.168.1.135-20260419-141949 balloon-planner]$ git fetch origin
+remote: Enumerating objects: 4, done.
+remote: Counting objects: 100% (4/4), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (3/3), 1.08 KiB | 1.08 MiB/s, done.
+From https://github.com/swipswaps/balloon-color-planner
+ * [new branch]      whitesource/configure -> origin/whitesource/configure
+[owner@192.168.1.135-20260419-142006 balloon-planner]$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+[owner@192.168.1.135-20260419-142009 balloon-planner]$ ls -a
+git status
+git remote -v
+.  ..  css  .git  .github  index.html  js  README.md
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+origin	https://github.com/swipswaps/balloon-color-planner.git (fetch)
+origin	https://github.com/swipswaps/balloon-color-planner.git (push)
+[owner@192.168.1.135-20260419-142031 balloon-planner]$ ^C
+[owner@192.168.1.135-20260419-142147 balloon-planner]$ ls -a
+#git status
+git remote -v
+.  ..  css  .git  .github  index.html  js  README.md
+origin	https://github.com/swipswaps/balloon-color-planner.git (fetch)
+origin	https://github.com/swipswaps/balloon-color-planner.git (push)
+[owner@192.168.1.135-20260419-142153 balloon-planner]$ ^Ct status
+[owner@192.168.1.135-20260419-142206 balloon-planner]$ xclip -sel clip -o |tee js/recolor.js.new 
+// js/recolor.js
+// Rule 2: original photo is the base layer — never reconstructed from geometry
+// Rule 3: recoloring engine — clip to region, preserve photo shading
+// Rule 4: regions define their own path() — not circles
+// Rule 6: rendering only — interaction is separate (app.js)
+// Rule 13: preserves original lighting, shading, texture
+//
+// BOUNDARY FIX (v2):
+// Previous approach: fillRect(0,0,W,H) clipped to circle → bleed where circles
+// overlap in 2D even if depth-separated in the photo.
+//
+// Fix: composite 'color' blend into an offscreen canvas per region, then stamp
+// only that clipped result onto the main canvas. The photo's dark inter-balloon
+// gaps (luminance ~0) stay dark under 'color' blend — they act as a natural mask.
+
+const Recolor = (() => {
+  let _photoImg = null;
+
+  function loadPhoto(b64) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        if (img.naturalWidth === 0) reject(new Error('Image decoded to zero size'));
+        _photoImg = img;
+        resolve(img);
+      };
+      img.onerror = () => reject(new Error('Image failed to load'));
+      img.src = b64;
+    });
+  }
+
+  function recolor(ctx, regions, colorMap) {
+    if (!_photoImg) throw new Error('Photo not loaded');
+
+    const W = ctx.canvas.width;
+    const H = ctx.canvas.height;
+
+    // Base layer: original photo (Rule 2)
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = 1;
+    ctx.drawImage(_photoImg, 0, 0, W, H);
+
+    regions.forEach(region => {
+      const color = colorMap[region.id];
+      if (!color) return;
+
+      // Offscreen canvas — isolates this region's colorized pixels
+      const oc = document.createElement('canvas');
+      oc.width = W;
+      oc.height = H;
+      const oc_ctx = oc.getContext('2d');
+
+      // Draw photo into offscreen
+      oc_ctx.drawImage(_photoImg, 0, 0, W, H);
+
+      oc_ctx.save();
+      oc_ctx.beginPath();
+      region.path(oc_ctx);
+      oc_ctx.clip();
+
+      // 'color' blend: shifts hue, preserves luminance — dark gaps stay dark (Rule 13)
+      oc_ctx.globalCompositeOperation = 'color';
+      oc_ctx.globalAlpha = 0.88;
+      oc_ctx.fillStyle = color;
+      oc_ctx.fillRect(0, 0, W, H);
+
+      // Restore shading depth (Rule 13)
+      oc_ctx.globalCompositeOperation = 'multiply';
+      oc_ctx.globalAlpha = 0.30;
+      oc_ctx.drawImage(_photoImg, 0, 0, W, H);
+
+      // Restore highlights (Rule 13)
+      oc_ctx.globalCompositeOperation = 'screen';
+      oc_ctx.globalAlpha = 0.10;
+      oc_ctx.fillStyle = '#ffffff';
+      oc_ctx.fillRect(0, 0, W, H);
+
+      oc_ctx.restore();
+
+      // Stamp offscreen result — clipped so nothing bleeds outside the region
+      ctx.save();
+      ctx.beginPath();
+      region.path(ctx);
+      ctx.clip();
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = 1;
+      ctx.drawImage(oc, 0, 0);
+      ctx.restore();
+    });
+  }
+
+  function drawSelection(ctx, region) {
+    ctx.save();
+    ctx.beginPath();
+    region.path(ctx);
+    ctx.strokeStyle = '#e8006a';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.globalAlpha = 0.15;
+    ctx.fillStyle = '#e8006a';
+    ctx.fill();
+    ctx.restore();
+  }
+
+  return { loadPhoto, recolor, drawSelection };
+[owner@192.168.1.135-20260419-142311 balloon-planner]$ er]$ xclip -sel clip -o |tee ^C/recolor.js.new 
+[owner@192.168.1.135-20260419-142315 balloon-planner]$ diff js/recolor.js js/recolor.js.new 
+3c3
+< // Rule 3: recoloring engine — clip to region, apply 'color' blend, restore shading
+---
+> // Rule 3: recoloring engine — clip to region, preserve photo shading
+5c5
+< // Rule 6: this file handles rendering ONLY — interaction is separate (app.js)
+---
+> // Rule 6: rendering only — interaction is separate (app.js)
+6a7,14
+> //
+> // BOUNDARY FIX (v2):
+> // Previous approach: fillRect(0,0,W,H) clipped to circle → bleed where circles
+> // overlap in 2D even if depth-separated in the photo.
+> //
+> // Fix: composite 'color' blend into an offscreen canvas per region, then stamp
+> // only that clipped result onto the main canvas. The photo's dark inter-balloon
+> // gaps (luminance ~0) stay dark under 'color' blend — they act as a natural mask.
+11d18
+<   // Rule 10: verify image loads before using
+25,26d31
+<   // Rule 3: core recoloring function
+<   // 'color' composite op preserves luminance — keeps shading, changes only hue
+28c33
+<     if (!_photoImg) throw new Error('Photo not loaded — call loadPhoto() first');
+---
+>     if (!_photoImg) throw new Error('Photo not loaded');
+38d42
+<     // Color layer: per-region (Rule 4)
+41c45
+<       if (!color) return; // unassigned regions show original photo color
+---
+>       if (!color) return;
+43c47,78
+<       ctx.save();
+---
+>       // Offscreen canvas — isolates this region's colorized pixels
+>       const oc = document.createElement('canvas');
+>       oc.width = W;
+>       oc.height = H;
+>       const oc_ctx = oc.getContext('2d');
+> 
+>       // Draw photo into offscreen
+>       oc_ctx.drawImage(_photoImg, 0, 0, W, H);
+> 
+>       oc_ctx.save();
+>       oc_ctx.beginPath();
+>       region.path(oc_ctx);
+>       oc_ctx.clip();
+> 
+>       // 'color' blend: shifts hue, preserves luminance — dark gaps stay dark (Rule 13)
+>       oc_ctx.globalCompositeOperation = 'color';
+>       oc_ctx.globalAlpha = 0.88;
+>       oc_ctx.fillStyle = color;
+>       oc_ctx.fillRect(0, 0, W, H);
+> 
+>       // Restore shading depth (Rule 13)
+>       oc_ctx.globalCompositeOperation = 'multiply';
+>       oc_ctx.globalAlpha = 0.30;
+>       oc_ctx.drawImage(_photoImg, 0, 0, W, H);
+> 
+>       // Restore highlights (Rule 13)
+>       oc_ctx.globalCompositeOperation = 'screen';
+>       oc_ctx.globalAlpha = 0.10;
+>       oc_ctx.fillStyle = '#ffffff';
+>       oc_ctx.fillRect(0, 0, W, H);
+> 
+>       oc_ctx.restore();
+45c80,81
+<       // Clip to balloon region shape (Rule 4: path(), not circle)
+---
+>       // Stamp offscreen result — clipped so nothing bleeds outside the region
+>       ctx.save();
+49,66c85,87
+< 
+<       // Step 1: Apply hue/color — 'color' blend preserves luminance (Rule 13)
+<       ctx.globalCompositeOperation = 'color';
+<       ctx.globalAlpha = 0.92;
+<       ctx.fillStyle = color;
+<       ctx.fillRect(0, 0, W, H);
+< 
+<       // Step 2: Restore shading from original photo (Rule 13)
+<       ctx.globalCompositeOperation = 'multiply';
+<       ctx.globalAlpha = 0.35;
+<       ctx.drawImage(_photoImg, 0, 0, W, H);
+< 
+<       // Step 3: Restore specular highlights (Rule 13)
+<       ctx.globalCompositeOperation = 'screen';
+<       ctx.globalAlpha = 0.12;
+<       ctx.fillStyle = '#ffffff';
+<       ctx.fillRect(0, 0, W, H);
+< 
+---
+>       ctx.globalCompositeOperation = 'source-over';
+>       ctx.globalAlpha = 1;
+>       ctx.drawImage(oc, 0, 0);
+71d91
+<   // Render selection indicator without altering photo rendering (Rule 6)
+79c99
+<     ctx.globalAlpha = 0.12;
+---
+>     ctx.globalAlpha = 0.15;
+86c106
+< })();
+---
+> })();
+\ No newline at end of file
+[owner@192.168.1.135-20260419-142326 balloon-planner]$ xclip -sel clip -o |tee js/recolor.js
+// js/recolor.js
+// Rule 2: original photo is the base layer — never reconstructed from geometry
+// Rule 3: recoloring engine — clip to region, preserve photo shading
+// Rule 4: regions define their own path() — not circles
+// Rule 6: rendering only — interaction is separate (app.js)
+// Rule 13: preserves original lighting, shading, texture
+//
+// BOUNDARY FIX (v2):
+// Previous approach: fillRect(0,0,W,H) clipped to circle → bleed where circles
+// overlap in 2D even if depth-separated in the photo.
+//
+// Fix: composite 'color' blend into an offscreen canvas per region, then stamp
+// only that clipped result onto the main canvas. The photo's dark inter-balloon
+// gaps (luminance ~0) stay dark under 'color' blend — they act as a natural mask.
+
+const Recolor = (() => {
+  let _photoImg = null;
+
+  function loadPhoto(b64) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        if (img.naturalWidth === 0) reject(new Error('Image decoded to zero size'));
+        _photoImg = img;
+        resolve(img);
+      };
+      img.onerror = () => reject(new Error('Image failed to load'));
+      img.src = b64;
+    });
+  }
+
+  function recolor(ctx, regions, colorMap) {
+    if (!_photoImg) throw new Error('Photo not loaded');
+
+    const W = ctx.canvas.width;
+    const H = ctx.canvas.height;
+
+    // Base layer: original photo (Rule 2)
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = 1;
+    ctx.drawImage(_photoImg, 0, 0, W, H);
+
+    regions.forEach(region => {
+      const color = colorMap[region.id];
+      if (!color) return;
+
+      // Offscreen canvas — isolates this region's colorized pixels
+      const oc = document.createElement('canvas');
+      oc.width = W;
+      oc.height = H;
+      const oc_ctx = oc.getContext('2d');
+
+      // Draw photo into offscreen
+      oc_ctx.drawImage(_photoImg, 0, 0, W, H);
+
+      oc_ctx.save();
+      oc_ctx.beginPath();
+      region.path(oc_ctx);
+      oc_ctx.clip();
+
+      // 'color' blend: shifts hue, preserves luminance — dark gaps stay dark (Rule 13)
+      oc_ctx.globalCompositeOperation = 'color';
+      oc_ctx.globalAlpha = 0.88;
+      oc_ctx.fillStyle = color;
+      oc_ctx.fillRect(0, 0, W, H);
+
+      // Restore shading depth (Rule 13)
+      oc_ctx.globalCompositeOperation = 'multiply';
+      oc_ctx.globalAlpha = 0.30;
+      oc_ctx.drawImage(_photoImg, 0, 0, W, H);
+
+      // Restore highlights (Rule 13)
+      oc_ctx.globalCompositeOperation = 'screen';
+      oc_ctx.globalAlpha = 0.10;
+      oc_ctx.fillStyle = '#ffffff';
+      oc_ctx.fillRect(0, 0, W, H);
+
+      oc_ctx.restore();
+
+      // Stamp offscreen result — clipped so nothing bleeds outside the region
+      ctx.save();
+      ctx.beginPath();
+      region.path(ctx);
+      ctx.clip();
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = 1;
+      ctx.drawImage(oc, 0, 0);
+      ctx.restore();
+    });
+  }
+
+  function drawSelection(ctx, region) {
+    ctx.save();
+    ctx.beginPath();
+    region.path(ctx);
+    ctx.strokeStyle = '#e8006a';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.globalAlpha = 0.15;
+    ctx.fillStyle = '#e8006a';
+    ctx.fill();
+    ctx.restore();
+  }
+
+  return { loadPhoto, recolor, drawSelection };
+[owner@192.168.1.135-20260419-142335 balloon-planner]$ xclip -sel clip -o |tee js/recolor.js.new ^C.js
+[owner@192.168.1.135-20260419-142339 balloon-planner]$ diff js/recolor.js ^C/recolor.js.new 
+[owner@192.168.1.135-20260419-142344 balloon-planner]$ rm -rf js/recolor.js
+[owner@192.168.1.135-20260419-142354 balloon-planner]$ git add js/recolor.js
+git commit -m "fix: offscreen canvas per region prevents color boundary bleed"
+git push
+[main 7a15b59] fix: offscreen canvas per region prevents color boundary bleed
+ 1 file changed, 86 deletions(-)
+ delete mode 100644 js/recolor.js
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 322 bytes | 322.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/swipswaps/balloon-color-planner.git
+   e284f5d..7a15b59  main -> main
+[owner@192.168.1.135-20260419-142406 balloon-planner]$ xclip -sel clip -o |tee js/regions.js.new
+// js/regions.js
+// AUTO-GENERATED from hybrid segmentation of clust_row_mocha.png
+// Rule 1: visually verified — annotated + reconstruction images confirmed alignment
+// Rule 8: positions NOT modified after detection — geometry integrity preserved
+// Rule 9: all cx±r, cy±r validated within 300x356 — zero violations
+
+const PHOTO_W = 300;
+const PHOTO_H = 356;
+
+// Rule 10: photo encode/decode verified (PIL round-trip confirmed 300x356)
+const PHOTO_B64 = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAFkASwDASIAAhEBAxEB/8QAHAABAAEFAQEAAAAAAAAAAAAAAAYBAwQFBwII/8QANhAAAQMDAwMDAwIEBgMBAAAAAQACAwQFEQYSIQcxQRMiURQyYUJxI1KBkQgVFjNiwSRysaH/xAAZAQEAAwEBAAAAAAAAAAAAAAAAAgMEAQX/xAAlEQADAAIDAQEAAgIDAQAAAAAAAQIDEQQSITFBEyIUUSMyYTP/2gAMAwEAAhEDEQA/APsJERZy4IiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIqIgKoiIA[owner@192.168.1.135-20260419-142650 balloon-planner]$ pwd
+/home/owner/Documents/633e9483-8ceb-4a0c-b0d8-798f8437f6eb/balloon-planner
+[owner@192.168.1.135-20260421-152938 balloon-planner]$ cd ..
+[owner@192.168.1.135-20260421-152948 633e9483-8ceb-4a0c-b0d8-798f8437f6eb]$ ls -lat
+total 72
+drwxr-xr-x. 1 owner owner   938 Apr 21 15:21 balloon-planner
+drwxr-xr-x. 1 owner owner 13396 Apr 21 15:20 notes
+drwxr-xr-x. 1 owner owner   128 Apr 19 14:11 .
+-rw-r--r--. 1 owner owner 44478 Apr 19 14:11 balloon_color_picker.html
+-rw-r--r--. 1 owner owner 25368 Apr 19 14:11 balloon-planner.zip
+drwxr-xr-x. 1 owner owner  3238 Apr 19 14:09 ..
+[owner@192.168.1.135-20260421-152955 633e9483-8ceb-4a0c-b0d8-798f8437f6eb]$ code .
+[owner@192.168.1.135-20260421-153003 633e9483-8ceb-4a0c-b0d8-798f8437f6eb]$ firefox balloon_color_picker.html 
+1776800013816	FirefoxAccounts	ERROR	error POSTing /oauth/token: {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800013816	FirefoxAccounts	ERROR	Background refresh of profile failed: {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800014553	FirefoxAccounts	ERROR	error GETing /account/attached_clients: {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800014553	FirefoxAccounts	ERROR	Could not update attached clients list : {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800014559	FirefoxAccounts	ERROR	error GETing /account/devices?filterIdleDevicesTimestamp=1774985614508: {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800014559	Sync.Browser	ERROR	Refreshing device list failed.: {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800014573	FirefoxAccounts	ERROR	error POSTing /oauth/token: {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800014574	FirefoxAccounts	ERROR	FxA rejecting with error UNKNOWN_ERROR, details: {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800014574	Sync.SyncAuthManager	ERROR	Non-authentication error in _fetchTokenForUser: Error: UNKNOWN_ERROR(resource://gre/modules/FxAccounts.sys.mjs:1418:18) JS Stack trace: _error@FxAccounts.sys.mjs:1418:18
+_errorToErrorClass@FxAccounts.sys.mjs:1410:17
+getOAuthToken@FxAccounts.sys.mjs:495:28
+1776800014575	Sync.ErrorHandler	ERROR	Sync encountered a login error
+1776800014675	FirefoxAccounts	ERROR	error GETing /account/attached_clients: {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800014675	FirefoxAccounts	ERROR	Could not update attached clients list : {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800014678	FirefoxAccounts	ERROR	error GETing /account/devices?filterIdleDevicesTimestamp=1774985614587: {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800014680	Sync.Browser	ERROR	Refreshing device list failed.: {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800014681	Sync.Browser	ERROR	Refreshing device list failed.: {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800014687	FirefoxAccounts	ERROR	error GETing /account/attached_clients: {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800014687	FirefoxAccounts	ERROR	Could not update attached clients list : {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800015338	FirefoxAccounts	ERROR	error GETing /account/attached_clients: {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800015339	FirefoxAccounts	ERROR	Could not update attached clients list : {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800015342	FirefoxAccounts	ERROR	error GETing /account/devices?filterIdleDevicesTimestamp=1774985615330: {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+1776800015347	Sync.Browser	ERROR	Refreshing device list failed.: {"error":{},"errorString":"[Exception... \"NS_ERROR_UNKNOWN_HOST\"  nsresult: \"0x804b001e (NS_ERROR_UNKNOWN_HOST)\"  location: \"JS frame :: resource://services-common/rest.sys.mjs :: onStopRequest :: line 478\"  data: no]","message":null,"code":null,"errno":null}
+console.error: "Sync encountered an error - see about:sync-log for the log file."
+^CExiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+
+[owner@192.168.1.135-20260421-153350 633e9483-8ceb-4a0c-b0d8-798f8437f6eb]$ 

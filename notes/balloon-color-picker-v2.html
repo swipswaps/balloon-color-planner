@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Balloon Color Picker - The Balloon Lady</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 20px;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      padding: 40px;
+    }
+    
+    h1 {
+      text-align: center;
+      font-size: 48px;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+    
+    .subtitle {
+      text-align: center;
+      font-size: 18px;
+      color: #7f8c8d;
+      margin-bottom: 40px;
+    }
+    
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .arrangement-panel {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      min-height: 500px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .arrangement-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 15px;
+    }
+    
+    .arrangement-container {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      background: white;
+      cursor: grab;
+      min-height: 400px;
+    }
+    
+    .arrangement-container:active {
+      cursor: grabbing;
+    }
+    
+    .arrangement-canvas {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-origin: center;
+      transition: transform 0.1s ease-out;
+    }
+    
+    .balloon-group {
+      position: absolute;
+      transition: all 0.3s ease;
+    }
+    
+    .balloon {
+      width: 60px;
+      height: 80px;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      position: absolute;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .control-btn {
+      padding: 8px 16px;
+      background: white;
+      border: 2px solid #dee2e6;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    
+    .control-btn:hover {
+      background: #e9ecef;
+      border-color: #adb5bd;
+    }
+    
+    .zoom-indicator {
+      padding: 8px 12px;
+      background: white;
+      border: 2px solid #dee2e6;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .selected-colors {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      min-height: 100px;
+    }
+    
+    .selected-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 10px;
+    }
+    
+    .selected-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .selected-chip {
+      background: white;
+      border: 2px solid #dee2e6;
+      border-radius: 20px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .selected-chip:hover {
+      background: #ffe0e0;
+      border-color: #ff6b6b;
+    }
+    
+    .selected-chip .remove {
+      color: #ff6b6b;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    
+    .color-card {
+      background: white;
+      border: 3px solid transparent;
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+    }
+    
+    .color-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      border-color: #3498db;
+    }
+    
+    .color-card.selected {
+      border-color: #27ae60;
+      background: #e8f8f0;
+    }
+    
+    .color-thumbnail {
+      width: 100%;
+      height: 180px;
+      object-fit: contain;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      background: #f8f9fa;
+    }
+    
+    .color-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #2c3e50;
+      line-height: 1.4;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .actions {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    
+    button {
+      padding: 12px 32px;
+      font-size: 16px;
+      font-family: 'EB Garamond', Georgia, serif;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+    
+    .btn-copy {
+      background: #3498db;
+      color: white;
+    }
+    
+    .btn-copy:hover {
+      background: #2980b9;
+    }
+    
+    .btn-clear {
+      background: #e74c3c;
+      color: white;
+    }
+    
+    .btn-clear:hover {
+      background: #c0392b;
+    }
+    
+    .empty-state {
+      color: #95a5a6;
+      font-style: italic;
+      font-size: 14px;
+    }
+    
+    @media (max-width: 1200px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .arrangement-panel {
+        order: -1;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 36px;
+      }
+      
+      .color-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
+      }
+      
+      .color-thumbnail {
+        height: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Balloon Color Picker</h1>
+    <p class="subtitle">Select your perfect balloon colors</p>
+    
+    <div class="main-grid">
+      <div class="left-panel">
+        <div class="selected-colors">
+          <div class="selected-label">Selected Colors (<span id="count">0</span>)</div>
+          <div class="selected-list" id="selectedList">
+            <div class="empty-state">No colors selected yet. Click on colors below to add them.</div>
+          </div>
+        </div>
+        
+        <div class="color-grid" id="colorGrid"></div>
+        
+        <div class="actions">
+          <button class="btn-copy" onclick="copySelection()">Copy Selection</button>
+          <button class="btn-clear" onclick="clearSelection()">Clear All</button>
+        </div>
+      </div>
+      
+      <div class="arrangement-panel">
+        <div class="arrangement-title">Arrangement Preview</div>
+        <div class="arrangement-container" id="arrangementContainer">
+          <div class="arrangement-canvas" id="canvas"></div>
+        </div>
+        <div class="controls">
+          <button class="control-btn" onclick="zoomIn()">Zoom In</button>
+          <button class="control-btn" onclick="zoomOut()">Zoom Out</button>
+          <button class="control-btn" onclick="rotate(-15)">Rotate ↶</button>
+          <button class="control-btn" onclick="rotate(15)">Rotate ↷</button>
+          <button class="control-btn" onclick="resetView()">Reset View</button>
+          <span class="zoom-indicator" id="zoomLevel">100%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const colors = [];
+    const selected = new Set();
+    let zoom = 1;
+    let rotation = 0;
+    let panX = 0;
+    let panY = 0;
+    let isDragging = false;
+    let startX, startY;
+    
+    // Load colors from balloon-colors.json
+    fetch('balloon-colors.json')
+      .then(r => r.json())
+      .then(data => {
+        colors.push(...data);
+        renderGrid();
+        updateArrangement();
+      })
+      .catch(err => {
+        document.getElementById('colorGrid').innerHTML = 
+          '<p style="color: #e74c3c; text-align: center;">Error loading colors. Make sure balloon-colors.json is in the same directory.</p>';
+      });
+    
+    // Pan controls
+    const container = document.getElementById('arrangementContainer');
+    const canvas = document.getElementById('canvas');
+    
+    container.addEventListener('mousedown', e => {
+      isDragging = true;
+      startX = e.clientX - panX;
+      startY = e.clientY - panY;
+    });
+    
+    container.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      panX = e.clientX - startX;
+      panY = e.clientY - startY;
+      updateTransform();
+    });
+    
+    container.addEventListener('mouseup', () => isDragging = false);
+    container.addEventListener('mouseleave', () => isDragging = false);
+    
+    container.addEventListener('wheel', e => {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -0.1 : 0.1;
+      zoom = Math.max(0.5, Math.min(3, zoom + delta));
+      updateTransform();
+      document.getElementById('zoomLevel').textContent = Math.round(zoom * 100) + '%';
+    });
+    
+    function updateTransform() {
+      canvas.style.transform = `translate(calc(-50% + ${panX}px), calc(-50% + ${panY}px)) scale(${zoom}) rotate(${rotation}deg)`;
+    }
+    
+    function zoomIn() {
+      zoom = Math.min(3, zoom + 0.2);
+      updateTransform();
+      document.getElementById('zoomLevel').textContent = Math.round(zoom * 100) + '%';
+    }
+    
+    function zoomOut() {
+      zoom = Math.max(0.5, zoom - 0.2);
+      updateTransform();
+      document.getElementById('zoomLevel').textContent = Math.round(zoom * 100) + '%';
+    }
+    
+    function rotate(deg) {
+      rotation += deg;
+      updateTransform();
+    }
+    
+    function resetView() {
+      zoom = 1;
+      rotation = 0;
+      panX = 0;
+      panY = 0;
+      updateTransform();
+      document.getElementById('zoomLevel').textContent = '100%';
+    }
+    
+    function renderGrid() {
+      const grid = document.getElementById('colorGrid');
+      grid.innerHTML = colors.map((color, idx) => `
+        <div class="color-card" onclick="toggleColor(${idx})" id="card-${idx}">
+          <img src="${color.thumbnail}" alt="${color.name}" class="color-thumbnail" 
+               onerror="this.style.display='none'; console.error('Failed to load: ${color.thumbnail}')">
+          <div class="color-name">${color.name}</div>
+        </div>
+      `).join('');
+    }
+    
+    function toggleColor(idx) {
+      const color = colors[idx];
+      const card = document.getElementById(`card-${idx}`);
+      
+      if (selected.has(idx)) {
+        selected.delete(idx);
+        card.classList.remove('selected');
+      } else {
+        selected.add(idx);
+        card.classList.add('selected');
+      }
+      
+      updateSelectedList();
+      updateArrangement();
+    }
+    
+    function updateSelectedList() {
+      const list = document.getElementById('selectedList');
+      const count = document.getElementById('count');
+      count.textContent = selected.size;
+      
+      if (selected.size === 0) {
+        list.innerHTML = '<div class="empty-state">No colors selected yet. Click on colors below to add them.</div>';
+        return;
+      }
+      
+      const selectedIndices = Array.from(selected);
+      list.innerHTML = selectedIndices.map(idx => `
+        <div class="selected-chip" onclick="toggleColor(${idx})">
+          <span>${colors[idx].name}</span>
+          <span class="remove">×</span>
+        </div>
+      `).join('');
+    }
+    
+    function updateArrangement() {
+      const canvas = document.getElementById('canvas');
+      
+      if (selected.size === 0) {
+        canvas.innerHTML = '<div style="color: #95a5a6; font-style: italic;">Select colors to preview arrangement</div>';
+        return;
+      }
+      
+      const selectedColors = Array.from(selected).map(idx => colors[idx]);
+      const balloons = [];
+      
+      // Create cluster arrangement
+      selectedColors.forEach((color, i) => {
+        const angle = (i / selectedColors.length) * Math.PI * 2;
+        const radius = 40 + Math.random() * 30;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        
+        // Extract color from thumbnail filename or use random bright color
+        const colorHash = color.thumbnail.match(/[a-f0-9]{6}/)?.[0] || '000000';
+        const r = parseInt(colorHash.slice(0,2), 16);
+        const g = parseInt(colorHash.slice(2,4), 16);
+        const b = parseInt(colorHash.slice(4,6), 16);
+        const brightness = (r + g + b) / 3;
+        const colorStyle = brightness < 100 ? `hsl(${Math.random()*360}, 70%, 60%)` : `rgb(${r},${g},${b})`;
+        
+        balloons.push(`
+          <div class="balloon" style="
+            left: ${x}px; 
+            top: ${y}px;
+            background: ${colorStyle};
+            z-index: ${i};
+          " title="${color.name}"></div>
+        `);
+      });
+      
+      canvas.innerHTML = `<div class="balloon-group">${balloons.join('')}</div>`;
+    }
+    
+    function copySelection() {
+      if (selected.size === 0) {
+        alert('No colors selected!');
+        return;
+      }
+      
+      const selectedColors = Array.from(selected).map(idx => colors[idx].name);
+      const text = selectedColors.join(', ');
+      
+      navigator.clipboard.writeText(text).then(() => {
+        alert(`Copied ${selected.size} colors to clipboard!`);
+      }).catch(() => {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert(`Copied ${selected.size} colors to clipboard!`);
+      });
+    }
+    
+    function clearSelection() {
+      if (selected.size === 0) return;
+      
+      selected.forEach(idx => {
+        document.getElementById(`card-${idx}`).classList.remove('selected');
+      });
+      selected.clear();
+      updateSelectedList();
+      updateArrangement();
+    }
+  </script>
+</body>
+</html>

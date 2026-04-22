@@ -1,0 +1,188 @@
+1. Visual Truth Gate (MANDATORY)
+Before producing ANY output:
+
+1. Render detected balloon positions as an image
+2. Overlay on the original source photo
+3. Visually confirm:
+   - centers align
+   - sizes match
+   - density matches perception
+
+If ANY mismatch:
+- STOP
+- adjust detection or transform
+- re-render verification
+
+ALWAYS output:
+- annotated source image
+- rendered reconstruction image
+2. Rendering Model (Correct Approach)
+Do NOT recreate balloons using SVG or geometric primitives.
+
+Instead:
+- Use the original photo as the base layer
+- Apply color ONLY to balloon regions
+
+Preserve:
+- shading
+- highlights
+- reflections
+- depth
+
+Reject any method that alters the entire image uniformly.
+3. Recoloring Engine (Correct Implementation)
+function recolor(ctx, img, regions, colors) {
+    ctx.drawImage(img, 0, 0);
+
+    regions.forEach((region, i) => {
+        const color = colors[i % colors.length];
+
+        ctx.save();
+
+        // Clip to balloon region
+        ctx.beginPath();
+        region.path(ctx); // region defines its own shape
+        ctx.clip();
+
+        // Apply color (preserves luminance)
+        ctx.globalCompositeOperation = 'color';
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+        // Restore shading
+        ctx.globalCompositeOperation = 'multiply';
+        ctx.globalAlpha = 0.4;
+        ctx.drawImage(img, 0, 0);
+
+        // Restore highlights
+        ctx.globalCompositeOperation = 'screen';
+        ctx.globalAlpha = 0.15;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+        ctx.restore();
+    });
+}
+4. Region Model (NOT Circles)
+Do NOT represent balloons as circles.
+
+Instead:
+- Define each balloon as a region (mask or path)
+- Regions may be:
+  - irregular
+  - partially occluded
+  - non-circular
+
+All color operations MUST apply to regions, not coordinates.
+5. Hybrid Segmentation (Required)
+Do NOT rely on a single detection method.
+
+Use:
+
+1. Edge detection (boundaries)
+2. Distance transform (centers)
+3. Watershed separation (split overlaps)
+4. Manual correction fallback
+
+If regions merge incorrectly:
+- require user-assisted correction
+6. Interaction Layer (Separate from Rendering)
+Use SVG or canvas hit regions ONLY for interaction.
+
+- clicking
+- selection
+- grouping
+
+DO NOT use them for visual rendering.
+7. Color Assignment Logic (Correct UX Behavior)
+When 2 colors are selected:
+
+Assign by role:
+- largest balloons → primary color
+- medium balloons → secondary color
+- smallest balloons → accent color
+
+Allow:
+- manual override
+- multi-select reassignment
+
+DO NOT alternate blindly.
+8. Geometry Integrity Rule
+Do NOT modify spacing or positions after detection.
+
+If density looks wrong:
+- detection is wrong
+- NOT the layout
+
+Never apply artificial compression or spreading.
+9. Bounding + Transform Validation
+After ANY transform:
+
+Compute:
+- min(cx - r)
+- max(cx + r)
+- min(cy - r)
+- max(cy + r)
+
+Assert:
+- all values are within viewport
+
+If ANY violation:
+- halt
+- print offending values
+- do not render
+10. Image Integrity Check
+For every image:
+
+1. encode to base64
+2. decode back
+3. open with image parser
+4. verify dimensions match
+
+If ANY failure:
+- reject image
+- do not embed
+11. Revert Protocol
+If user says "revert":
+
+1. restore last working version immediately
+2. present it
+3. THEN explain briefly
+
+Never explain first.
+12. Correct System Architecture
+[Original Image]
+        ↓
+[Hybrid Segmentation]
+        ↓
+[Balloon Regions (grouped or individual)]
+        ↓
+[Interaction Layer (SVG / hit regions)]
+        ↓
+[Color Assignment Engine]
+        ↓
+[Canvas Recolor Engine]
+        ↓
+[Visual Verification Output]
+13. Core Constraint (Non-Negotiable)
+The system must preserve:
+
+- original lighting
+- original shading
+- original texture
+
+If those change → the method is wrong.
+14. Practical First Implementation (Correct Starting Point)
+Build ONLY:
+
+- one cluster
+- one image
+- manually verified regions
+- 2–3 color selection
+
+Do NOT add:
+- sliders
+- multiple arrangements
+- automation layers
+
+Expand ONLY after visual correctness is achieved.
