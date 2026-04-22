@@ -1,0 +1,70 @@
+{
+  "title": "FIX: Remove duplicate git commits from path fix",
+  "problem": "Two identical commits created: 8226b3c and 5675726 both titled 'fix: Update image paths for GitHub Pages deployment'",
+  "root_cause": "Commit was made twice - once accidentally during earlier attempt, once during proper plan execution",
+  "solution": "Rebase to remove duplicate commit, keep only the latest with full test evidence",
+  "applicable_rules": [
+    "RULE_2: NO_PARTIAL_COMPLIANCE - Fix git history before push",
+    "RULE_17: VERSION_CONTROL_PROVENANCE - Clean commit history"
+  ],
+  "steps": [
+    {
+      "step_number": 1,
+      "task_name": "CHECK git log to identify duplicates",
+      "action": "View last 5 commits to confirm duplicate commit hashes",
+      "status": "NOT_STARTED",
+      "applicable_rule": "RULE_17",
+      "verbose_code_comment": "Execute: git log --oneline -5. Identify the two commits with same message. Note their hashes. We want to keep the latest (most recent) and remove the earlier one."
+    },
+    {
+      "step_number": 2,
+      "task_name": "Hard reset to before duplicates and re-stage only path changes",
+      "action": "Use git reset --hard b06f9c4 to undo duplicate commits, then stage only the 3 modified files",
+      "status": "COMPLETE",
+      "applicable_rule": "RULE_2",
+      "verbose_code_comment": "Execute: git reset --hard b06f9c4 (removes duplicates, keeps working dir changes). Then: git add generate-gallery-data.js balloon-planner/index-photo.html .notes/GITHUB_PAGES_PATH_FIX_PLAN.json. Only these 3 files should be staged for commit."
+    },
+    {
+      "step_number": 3,
+      "task_name": "VERIFY clean history after rebase",
+      "action": "Check that duplicate is removed and only one commit remains",
+      "status": "NOT_STARTED",
+      "applicable_rule": "RULE_17",
+      "verbose_code_comment": "Execute: git log --oneline -5. Verify: (1) Only ONE commit with 'fix: Update image paths for GitHub Pages' message, (2) Previous commits (AVIF restructure) still present and in order, (3) No error messages from rebase."
+    },
+    {
+      "step_number": 4,
+      "task_name": "TEST: Verify files still correct after rebase",
+      "action": "Check that generate-gallery-data.js and index-photo.html have path fixes",
+      "status": "NOT_STARTED",
+      "applicable_rule": "RULE_7",
+      "verbose_code_comment": "Verify: (1) grep generate-gallery-data.js for '/balloon-color-planner/assets/images/' should find paths, (2) grep balloon-planner/index-photo.html for 'Path normalization' should find script, (3) curl http://localhost:8888/balloon-planner/js/gallery-data.js | grep '/balloon-color-planner/assets/images/' should return paths."
+    },
+    {
+      "step_number": 5,
+      "task_name": "VERIFY no uncommitted changes",
+      "action": "Ensure working directory is clean before push",
+      "status": "NOT_STARTED",
+      "applicable_rule": "RULE_2",
+      "verbose_code_comment": "Execute: git status. Output should show 'working tree clean' with no modified or untracked files. If any files appear, stage and commit them first."
+    }
+  ],
+  "success_criteria": {
+    "must_have": [
+      "Only ONE commit with 'fix: Update image paths for GitHub Pages' message in history",
+      "Duplicate commit removed via rebase",
+      "Generate-gallery-data.js contains /balloon-color-planner/ paths",
+      "Index-photo.html contains path normalization script",
+      "Git log shows clean linear history",
+      "No uncommitted changes (git status shows clean)",
+      "Local tests still pass after rebase"
+    ]
+  },
+  "after_fix": {
+    "next_steps": [
+      "STEP 9: git push to GitHub (triggers Actions deploy)",
+      "STEP 10: Wait for GitHub Actions to deploy",
+      "STEP 11: Test on GitHub Pages - verify images load"
+    ]
+  }
+}

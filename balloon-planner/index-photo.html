@@ -86,6 +86,41 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
   <script src="js/gallery-data.js"></script>
+  <script>
+    // Path normalization for both local dev and GitHub Pages deployment
+    // On GitHub Pages: /balloon-color-planner/assets/images/...
+    // Locally: needs to adjust to ./assets/images/...
+    (function() {
+      const currentPath = window.location.pathname;
+      const isGitHubPages = currentPath.includes('balloon-color-planner');
+
+      if (!isGitHubPages && window.ProductGalleryData) {
+        // Running locally - convert absolute paths to relative
+        const fixPaths = (images) => images.map(img => {
+          if (img.startsWith('/balloon-color-planner/')) {
+            return img.replace('/balloon-color-planner/', './');
+          }
+          return img;
+        });
+
+        if (window.ProductGalleryData.defaultGallery?.images) {
+          window.ProductGalleryData.defaultGallery.images =
+            fixPaths(window.ProductGalleryData.defaultGallery.images);
+        }
+
+        for (const collection of Object.values(window.ProductGalleryData.colorCollections || {})) {
+          if (collection.images) {
+            collection.images = fixPaths(collection.images);
+          }
+          if (collection.swatch) {
+            if (collection.swatch.startsWith('/balloon-color-planner/')) {
+              collection.swatch = collection.swatch.replace('/balloon-color-planner/', './');
+            }
+          }
+        }
+      }
+    })();
+  </script>
   <script src="js/main.js"></script>
 </body>
 </html>

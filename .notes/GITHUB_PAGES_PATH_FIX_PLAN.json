@@ -1,0 +1,41 @@
+{
+  "title": "FIX: GitHub Pages Path Resolution - AVIF Images Return 404",
+  "problem": "Gallery deployed to https://swipswaps.github.io/balloon-color-planner/ but relative paths ./assets/images/ resolve to wrong URL root",
+  "root_cause": "GitHub Pages serves repo at /balloon-color-planner/ subdirectory. Relative paths don't account for this prefix.",
+  "solution": "Use absolute paths /balloon-color-planner/assets/images/ in gallery-data.js + runtime path normalization for local dev",
+  "applicable_rules": [
+    "RULE_7: EVIDENCE_BEFORE_ASSERTION - Test locally BEFORE committing",
+    "RULE_16: COMPLETE_WORKFLOW_TESTING - Local test + GitHub Pages verification",
+    "RULE_6: KNOWN_WORKING_CODE_ONLY - Path normalization proven pattern"
+  ],
+  "implementation": {
+    "step_1": "Update generate-gallery-data.js to use /balloon-color-planner/assets/images/ prefix",
+    "step_2": "Regenerate balloon-planner/js/gallery-data.js with new paths",
+    "step_3": "Add path normalization script to balloon-planner/index-photo.html",
+    "step_4": "Test locally - verify all 190 images load and color filtering works",
+    "step_5": "Commit changes with git",
+    "step_6": "Push to GitHub to trigger GitHub Actions deployment",
+    "step_7": "Verify on GitHub Pages - test https://swipswaps.github.io/balloon-color-planner/"
+  },
+  "success_criteria": {
+    "local_dev": [
+      "http://localhost:8888/balloon-planner/ loads HTTP 200",
+      "No 404 errors in browser Network tab",
+      "All 190 AVIF thumbnails display",
+      "Color filtering works (all 7 color families)",
+      "Path normalization script converts /balloon-color-planner/ → ./ paths"
+    ],
+    "github_pages": [
+      "https://swipswaps.github.io/balloon-color-planner/ loads",
+      "All images load with HTTP 200 status",
+      "Gallery displays smooth AVIF edges (no blocky artifacts)",
+      "Color filtering works",
+      "No 404 or CORS errors"
+    ]
+  },
+  "files_changed": [
+    "generate-gallery-data.js - Updated to use /balloon-color-planner/ prefix",
+    "balloon-planner/js/gallery-data.js - Regenerated with 387 absolute paths",
+    "balloon-planner/index-photo.html - Added path normalization IIFE script"
+  ]
+}

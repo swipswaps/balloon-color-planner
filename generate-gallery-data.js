@@ -13,8 +13,10 @@ const avifFiles = fs.readdirSync(assetsDir)
 
 console.log(`Found ${avifFiles.length} AVIF files in assets/images/`);
 
-// Create relative paths (works in dev and production)
-const allPhotos = avifFiles.map(f => `./assets/images/${f}`);
+// Create absolute paths that work on GitHub Pages subdirectory AND local dev
+// On GitHub Pages: https://swipswaps.github.io/balloon-color-planner/assets/images/...
+// Locally: browser resolves /balloon-color-planner/assets/images/ as root-relative
+const allPhotos = avifFiles.map(f => `/balloon-color-planner/assets/images/${f}`);
 
 // Color family grouping (7 families, 190 arrangements total)
 const colorMapping = {
